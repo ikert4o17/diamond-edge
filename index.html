@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiamondEdge MLB 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07090c;--s1:#0e1117;--s2:#151a21;--s3:#1b2130;--b1:#1f2636;--b2:#2a3347;--ac:#00e5a0;--r:#ff4d6d;--y:#fbbf24;--bl:#60a5fa;--pu:#c084fc;--or:#f97316;--tx:#e2e8f0;--m1:#64748b;--m2:#94a3b8;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif;min-height:100vh}
+header{background:var(--s1);border-bottom:1px solid var(--b1);padding:11px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:400}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;color:var(--ac)}
+.logo b{color:var(--tx);font-weight:400}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.ldot{width:6px;height:6px;background:var(--ac);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,160,.4)}50%{box-shadow:0 0 0 4px rgba(0,229,160,0)}}
+.badge{font-family:'IBM Plex Mono',monospace;font-size:.62rem;padding:2px 7px;border-radius:2px;background:var(--ac);color:#000;font-weight:700;letter-spacing:1px}
+.htime{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--m1)}
+.wbar{background:var(--s1);border-bottom:1px solid var(--b1);padding:7px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.wbar label{font-family:'IBM Plex Mono',monospace;font-size:.61rem;letter-spacing:1.5px;color:var(--m1);text-transform:uppercase;white-space:nowrap}
+.wbar input[type=range]{flex:1;min-width:80px;max-width:200px;accent-color:var(--ac)}
+.wchip{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;color:var(--ac);white-space:nowrap}
+.pchip{font-family:'IBM Plex Mono',monospace;font-size:.59rem;padding:2px 6px;border-radius:2px;text-transform:uppercase;letter-spacing:1px;font-weight:600;white-space:nowrap}
+.pe{background:rgba(255,77,109,.14);color:var(--r)}.pm{background:rgba(251,191,36,.14);color:var(--y)}.pl{background:rgba(0,229,160,.14);color:var(--ac)}
+.bchips{display:flex;gap:5px;flex-wrap:wrap}
+.bc{font-family:'IBM Plex Mono',monospace;font-size:.59rem;padding:1px 6px;border-radius:20px;border:1px solid var(--b1)}
+.bcp{background:rgba(251,191,36,.07);color:var(--y);border-color:rgba(251,191,36,.2)}
+.bcc{background:rgba(0,229,160,.07);color:var(--ac);border-color:rgba(0,229,160,.2)}
+.bct{background:rgba(255,255,255,.03);color:var(--m1)}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 100px)}
+@media(max-width:780px){.app{grid-template-columns:1fr}}
+.sb{background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column}
+.sb-hd{padding:10px 13px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.sb-ttl{font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:2px;text-transform:uppercase;color:var(--m1)}
+.rfbtn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;background:var(--s2);border:1px solid var(--b1);color:var(--m2);padding:3px 8px;border-radius:3px;cursor:pointer;transition:all .2s}
+.rfbtn:hover{border-color:var(--ac);color:var(--ac)}
+.glist{flex:1;overflow-y:auto;padding:6px}
+.glist::-webkit-scrollbar{width:3px}
+.glist::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.gc{padding:9px 11px;border:1px solid var(--b1);border-radius:4px;margin-bottom:4px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.gc:hover{border-color:var(--b2);background:var(--s2)}
+.gc.sel{border-color:var(--ac);background:rgba(0,229,160,.04)}
+.gc.sel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac)}
+.gc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.gc-tn{font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600}
+.gc-tm{font-family:'IBM Plex Mono',monospace;font-size:.57rem;color:var(--m1)}
+.gc-sp{display:flex;justify-content:space-between;margin-top:2px}
+.gc-p{font-size:.57rem;color:var(--m2);font-family:'IBM Plex Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:47%}
+.gst{font-family:'IBM Plex Mono',monospace;font-size:.54rem;padding:1px 4px;border-radius:2px;display:inline-block;margin-top:2px}
+.gst-pre{background:rgba(96,165,250,.1);color:var(--bl)}.gst-live{background:rgba(0,229,160,.1);color:var(--ac)}.gst-fin{background:rgba(100,116,139,.1);color:var(--m1)}
+.nogames{padding:20px 12px;text-align:center;color:var(--m1);font-family:'IBM Plex Mono',monospace;font-size:.66rem;line-height:2}
+.main{overflow-y:auto;padding:14px 18px}
+.main::-webkit-scrollbar{width:3px}
+.main::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.tabs{display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--b1);flex-wrap:wrap}
+.tab{font-family:'IBM Plex Mono',monospace;font-size:.67rem;letter-spacing:1px;padding:7px 12px;background:none;border:none;color:var(--m1);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;text-transform:uppercase}
+.tab.active{color:var(--ac);border-bottom-color:var(--ac)}
+.tab:hover:not(.active){color:var(--tx)}
+.panel{display:none}.panel.active{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+@media(max-width:1050px){.g5{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:5px;padding:12px;margin-bottom:10px}
+.card-hd{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--m1);margin-bottom:9px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:.52rem;padding:1px 4px;border-radius:2px;letter-spacing:.8px;white-space:nowrap}
+.tl{background:rgba(0,229,160,.1);color:var(--ac);border:1px solid rgba(0,229,160,.2)}
+.tm{background:rgba(251,191,36,.1);color:var(--y);border:1px solid rgba(251,191,36,.2)}
+.tp{background:rgba(96,165,250,.1);color:var(--bl);border:1px solid rgba(96,165,250,.2)}
+.tf{background:rgba(192,132,252,.1);color:var(--pu);border:1px solid rgba(192,132,252,.2)}
+.ts{background:rgba(249,115,22,.1);color:var(--or);border:1px solid rgba(249,115,22,.2)}
+.tc{background:rgba(0,229,160,.1);color:var(--ac);border:1px solid rgba(0,229,160,.2)}
+.scell{background:var(--s3);border-radius:3px;padding:6px 7px;text-align:center}
+.scl{font-family:'IBM Plex Mono',monospace;font-size:.54rem;color:var(--m1);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.scv{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.5px;line-height:1.1}
+.cg{color:var(--ac)}.cb{color:var(--r)}.cy{color:var(--y)}.cn{color:var(--tx)}
+.tup{color:var(--ac)}.tdn{color:var(--r)}.tfl{color:var(--y)}
+.sr{margin-bottom:7px}
+.sr label{display:block;font-family:'IBM Plex Mono',monospace;font-size:.61rem;color:var(--m1);margin-bottom:2px}
+.rr{display:flex;align-items:center;gap:6px}
+.rr input[type=range]{flex:1;accent-color:var(--ac)}
+.rv{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ac);font-weight:600;min-width:36px;text-align:right}
+.sr input[type=number],.sr select,.sr input[type=text]{width:100%;background:var(--s2);border:1px solid var(--b1);color:var(--tx);padding:5px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:.76rem;outline:none;transition:border .2s}
+.sr input:focus,.sr select:focus{border-color:var(--ac)}
+.mix-bar{height:8px;border-radius:4px;overflow:hidden;display:flex;margin:5px 0 3px}
+.mix-fb{height:100%;background:var(--bl)}.mix-br{height:100%;background:var(--pu)}.mix-os{height:100%;background:var(--or)}
+.mix-lbls{display:flex;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:.58rem}
+.gdh{background:var(--s2);border:1px solid var(--b1);border-radius:5px;padding:12px 15px;margin-bottom:12px}
+.gdh-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gdh-side{flex:1}
+.gdh-tn{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px;line-height:1}
+.gdh-sp{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--m2);margin-top:2px}
+.gdh-vs{font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--m1);letter-spacing:3px;flex-shrink:0}
+.gdh-meta{display:flex;gap:10px;margin-top:8px;padding-top:8px;border-top:1px solid var(--b1);flex-wrap:wrap}
+.gdh-mi{font-family:'IBM Plex Mono',monospace;font-size:.61rem;color:var(--m1)}
+.gdh-mi span{color:var(--tx);margin-left:4px}
+.prior-box{background:rgba(251,191,36,.025);border:1px solid rgba(251,191,36,.12);border-radius:5px;padding:10px 12px;margin-bottom:10px}
+.prior-hd{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--y);margin-bottom:8px}
+.blend-track{height:4px;background:var(--s2);border-radius:2px;display:flex;overflow:hidden;margin:5px 0 3px}
+.bt-p{height:100%;background:var(--y);transition:width .3s}
+.bt-c{height:100%;background:var(--ac);transition:width .3s}
+.bl-row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:.56rem}
+.cnote{font-family:'IBM Plex Mono',monospace;font-size:.61rem;padding:5px 8px;border-radius:3px;margin-top:6px;line-height:1.5}
+.cnlo{background:rgba(255,77,109,.05);color:var(--r);border:1px solid rgba(255,77,109,.12)}
+.cnme{background:rgba(251,191,36,.05);color:var(--y);border:1px solid rgba(251,191,36,.12)}
+.cnhi{background:rgba(0,229,160,.05);color:var(--ac);border:1px solid rgba(0,229,160,.12)}
+.mrow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.metric{background:var(--s2);border:1px solid var(--b1);border-radius:4px;padding:9px 10px;flex:1;min-width:80px}
+.mlbl{font-family:'IBM Plex Mono',monospace;font-size:.53rem;letter-spacing:1.5px;color:var(--m1);text-transform:uppercase;margin-bottom:3px}
+.mval{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:1px;line-height:1}
+.mvg{color:var(--ac)}.mvb{color:var(--r)}.mvy{color:var(--y)}.mvw{color:var(--tx)}.mvbl{color:var(--bl)}.mvpu{color:var(--pu)}.mvor{color:var(--or)}
+.verdict{border-radius:4px;padding:9px 12px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;line-height:1.65;margin-bottom:12px}
+.v-b{background:rgba(0,229,160,.07);border:1px solid rgba(0,229,160,.2);color:var(--ac)}
+.v-f{background:rgba(255,77,109,.07);border:1px solid rgba(255,77,109,.2);color:var(--r)}
+.v-m{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);color:var(--y)}
+.fbr{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.fbl{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--m1);width:130px;text-align:right;flex-shrink:0}
+.fb-track{flex:1;background:var(--s2);border-radius:2px;height:5px;overflow:hidden}
+.fb-fill{height:100%;border-radius:2px;transition:width .5s}
+.fbv{font-family:'IBM Plex Mono',monospace;font-size:.57rem;width:24px;text-align:right;flex-shrink:0}
+.lu-tabs{display:flex;gap:3px;margin-bottom:6px}
+.lu-tab{font-family:'IBM Plex Mono',monospace;font-size:.59rem;padding:3px 8px;background:var(--s2);border:1px solid var(--b1);border-radius:3px;cursor:pointer;color:var(--m1);transition:all .15s}
+.lu-tab.active{background:var(--s3);border-color:var(--bl);color:var(--bl)}
+.lu-tbl{width:100%;border-collapse:collapse;margin-top:4px}
+.lu-tbl th{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.8px;text-transform:uppercase;color:var(--m1);padding:4px 5px;text-align:left;border-bottom:1px solid var(--b1)}
+.lu-tbl td{font-family:'IBM Plex Mono',monospace;font-size:.64rem;padding:4px 5px;border-bottom:1px solid rgba(31,38,54,.6)}
+.lu-tbl tr:last-child td{border-bottom:none}
+.bh{font-size:.57rem;padding:1px 3px;border-radius:2px}
+.bh-L{background:rgba(96,165,250,.12);color:var(--bl)}.bh-R{background:rgba(255,77,109,.12);color:var(--r)}.bh-S{background:rgba(251,191,36,.12);color:var(--y)}
+.lcn{font-family:'IBM Plex Mono',monospace;font-size:.59rem;padding:4px 7px;border-radius:3px;margin-top:5px}
+.lcn-p{background:rgba(96,165,250,.06);color:var(--bl);border:1px solid rgba(96,165,250,.13)}
+.lcn-c{background:rgba(0,229,160,.06);color:var(--ac);border:1px solid rgba(0,229,160,.13)}
+.bull-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.bull-nm{font-family:'IBM Plex Mono',monospace;font-size:.61rem;color:var(--m2);width:75px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
+.bull-tr{flex:1;background:var(--s3);border-radius:2px;height:4px;overflow:hidden}
+.bull-fi{height:100%;border-radius:2px;transition:width .4s}
+.bull-pp{font-family:'IBM Plex Mono',monospace;font-size:.57rem;width:22px;text-align:right;flex-shrink:0}
+.heat-row{display:flex;align-items:center;gap:7px;padding:3px 6px;border-radius:3px;margin-bottom:3px;background:var(--s3)}
+.heat-nm{font-family:'IBM Plex Mono',monospace;font-size:.62rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.heat-val{font-family:'IBM Plex Mono',monospace;font-size:.62rem;font-weight:600;width:36px;text-align:right;flex-shrink:0}
+.ts-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(31,38,54,.6);font-family:'IBM Plex Mono',monospace;font-size:.66rem}
+.ts-row:last-child{border:none}
+.ump-card{background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:9px 11px;margin-bottom:9px}
+.ump-nm{font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;margin-bottom:4px}
+.ump-stats{display:flex;gap:10px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:.63rem;color:var(--m1)}
+.ump-stats span{color:var(--tx);margin-left:3px}
+.pow-wrap{overflow-x:auto;margin-top:5px}
+.pow-grid{display:grid;gap:2px;width:fit-content}
+.pc{background:var(--s2);border-radius:2px;padding:3px 2px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.56rem;min-width:30px}
+.pc.ph{color:var(--m1);background:var(--s3)}.pc.hot{background:rgba(0,229,160,.18);color:var(--ac)}.pc.warm{background:rgba(251,191,36,.12);color:var(--y)}
+.krow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b1);font-family:'IBM Plex Mono',monospace;font-size:.72rem}
+.krow:last-child{border:none}
+.pos{color:var(--ac)}.neg{color:var(--r)}
+.bt-tbl{width:100%;border-collapse:collapse;margin-top:7px}
+.bt-tbl th{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.8px;text-transform:uppercase;color:var(--m1);padding:5px 6px;text-align:left;border-bottom:1px solid var(--b1)}
+.bt-tbl td{font-family:'IBM Plex Mono',monospace;font-size:.7rem;padding:5px 6px;border-bottom:1px solid rgba(31,38,54,.5)}
+.seclbl{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--ac);margin-bottom:6px}
+.dv{border:none;border-top:1px solid var(--b1);margin:10px 0}
+.pend{padding:14px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.63rem;color:var(--m1);line-height:2;border:1px dashed var(--b1);border-radius:4px}
+.ldg{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--m1);padding:7px;display:flex;align-items:center;gap:5px}
+.nosel{display:flex;flex-direction:column;align-items:center;justify-content:center;height:48vh;color:var(--m1);font-family:'IBM Plex Mono',monospace;font-size:.72rem;gap:8px;text-align:center}
+.nosel-ico{font-size:2.2rem;opacity:.18}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid var(--b2);border-top-color:var(--ac);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+.run-btn{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:2.5px;background:var(--ac);color:#000;border:none;padding:9px 18px;border-radius:4px;cursor:pointer;width:100%;margin-top:9px;transition:all .2s}
+.run-btn:hover{opacity:.88;transform:translateY(-1px)}
+.run-btn:active{transform:translateY(0)}
+.disc{font-size:.61rem;color:var(--m1);margin-top:18px;padding-top:10px;border-top:1px solid var(--b1);font-family:'IBM Plex Mono',monospace;line-height:1.7}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">&#9918; Diamond<b>Edge</b></div>
+  <div class="hdr-r"><div class="ldot"></div><span class="htime" id="htime">--:--</span><span class="badge">MLB 2026</span></div>
+</header>
+<div class="wbar">
+  <label>Season Week</label>
+  <input type="range" id="sweek" min="1" max="26" step="1" value="1" oninput="updateWeek()">
+  <span class="wchip" id="wchip">Week 1</span>
+  <span class="pchip pe" id="pchip">Early Season</span>
+  <div class="bchips">
+    <span class="bc bcp" id="bc-p">Prior: 90%</span>
+    <span class="bc bcc" id="bc-c">Current: 10%</span>
+    <span class="bc bct" id="bc-t">Edge min: 6%</span>
+  </div>
+</div>
+<div class="app">
+  <div class="sb">
+    <div class="sb-hd"><span class="sb-ttl">Today's Games</span><button class="rfbtn" onclick="loadGames()">&#8635; Refresh</button></div>
+    <div id="api-status" style="padding:5px 13px;font-family:'IBM Plex Mono',monospace;font-size:.58rem;border-bottom:1px solid var(--b1);display:none"></div>
+    <div class="glist" id="glist"><div class="nogames"><span class="spin"></span><br>Loading games...</div></div>
+  </div>
+  <div class="main">
+    <div class="tabs">
+      <button class="tab active" onclick="swTab('model',this)">Model</button>
+      <button class="tab" onclick="swTab('pitching',this)">Pitching</button>
+      <button class="tab" onclick="swTab('batting',this)">Batting</button>
+      <button class="tab" onclick="swTab('totals',this)">Totals</button>
+      <button class="tab" onclick="swTab('intel',this)">Intel</button>
+      <button class="tab" onclick="swTab('kelly',this)">Kelly</button>
+      <button class="tab" onclick="swTab('tools',this)">Tools</button>
+    </div>
+
+    <!-- MODEL TAB -->
+    <div class="panel active" id="panel-model">
+      <div id="m-none" class="nosel"><div class="nosel-ico">&#9918;</div>Select a game from the sidebar to load live data</div>
+      <div id="m-body" style="display:none">
+        <div id="gdh-wrap"></div>
+        <div class="prior-box">
+          <div class="prior-hd">&#128197; Prior Year Baseline (2025) - <span id="pnote">weighted 90% at Week 1</span></div>
+          <div class="g2">
+            <div>
+              <div class="sr"><label>Home SP Prior ERA</label><input type="number" id="hPriorERA" value="3.75" step=".01"></div>
+              <div class="sr"><label>Home Bullpen Prior ERA</label><input type="number" id="hPriorBull" value="3.60" step=".01"></div>
+              <div class="sr"><label>Home Lineup Prior wRC+</label><input type="number" id="hPriorWrc" value="108" step="1"></div>
+            </div>
+            <div>
+              <div class="sr"><label>Away SP Prior ERA</label><input type="number" id="aPriorERA" value="4.10" step=".01"></div>
+              <div class="sr"><label>Away Bullpen Prior ERA</label><input type="number" id="aPriorBull" value="4.00" step=".01"></div>
+              <div class="sr"><label>Away Lineup Prior wRC+</label><input type="number" id="aPriorWrc" value="100" step="1"></div>
+            </div>
+          </div>
+          <div class="blend-track"><div class="bt-p" id="btp-m" style="width:90%"></div><div class="bt-c" id="btc-m" style="width:10%"></div></div>
+          <div class="bl-row"><span style="color:var(--y)" id="blp-m">Prior 90%</span><span style="color:var(--ac)" id="blc-m">Current 10%</span></div>
+          <div class="cnote cnlo" id="cn-m">&#9888; Low confidence - early season. Requiring 6% edge minimum.</div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-hd">&#127968; Home SP - <span id="hsp-nm">-</span> <span class="tag tl" id="hsp-tag">LOADING</span></div>
+            <div class="g5" style="margin-bottom:8px">
+              <div class="scell"><div class="scl">ERA</div><div class="scv cn" id="hsp-era">-</div></div>
+              <div class="scell"><div class="scl">FIP</div><div class="scv cn" id="hsp-fip">-</div></div>
+              <div class="scell"><div class="scl">WHIP</div><div class="scv cn" id="hsp-whip">-</div></div>
+              <div class="scell"><div class="scl">K%</div><div class="scv cn" id="hsp-kpct">-</div></div>
+              <div class="scell"><div class="scl">BB%</div><div class="scv cn" id="hsp-bbpct">-</div></div>
+              <div class="scell"><div class="scl">HR/9</div><div class="scv cn" id="hsp-hr9">-</div></div>
+              <div class="scell"><div class="scl">GB%</div><div class="scv cn" id="hsp-gbpct">-</div></div>
+              <div class="scell"><div class="scl">LOB%</div><div class="scv cn" id="hsp-lob">-</div></div>
+              <div class="scell"><div class="scl">BABIP</div><div class="scv cn" id="hsp-babip">-</div></div>
+              <div class="scell"><div class="scl">H/A ERA</div><div class="scv cn" id="hsp-split">-</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:.59rem;color:var(--m1)">L3 Trend:</span>
+              <span id="hsp-trend" style="font-size:.85rem">-</span>
+              <span id="hsp-tlbl" style="font-family:'IBM Plex Mono',monospace;font-size:.59rem;color:var(--m2)">loading...</span>
+            </div>
+            <div class="sr"><label>Quality Score <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="hPQ" min="0" max="10" step=".05" value="6" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2)"><span class="rv">6.00</span></div></div>
+            <div class="sr"><label>Days Rest <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="hRest" min="1" max="10" step="1" value="5" oninput="this.nextElementSibling.textContent=this.value+'d'"><span class="rv">5d</span></div></div>
+          </div>
+          <div class="card">
+            <div class="card-hd">&#9992; Away SP - <span id="asp-nm">-</span> <span class="tag tl" id="asp-tag">LOADING</span></div>
+            <div class="g5" style="margin-bottom:8px">
+              <div class="scell"><div class="scl">ERA</div><div class="scv cn" id="asp-era">-</div></div>
+              <div class="scell"><div class="scl">FIP</div><div class="scv cn" id="asp-fip">-</div></div>
+              <div class="scell"><div class="scl">WHIP</div><div class="scv cn" id="asp-whip">-</div></div>
+              <div class="scell"><div class="scl">K%</div><div class="scv cn" id="asp-kpct">-</div></div>
+              <div class="scell"><div class="scl">BB%</div><div class="scv cn" id="asp-bbpct">-</div></div>
+              <div class="scell"><div class="scl">HR/9</div><div class="scv cn" id="asp-hr9">-</div></div>
+              <div class="scell"><div class="scl">GB%</div><div class="scv cn" id="asp-gbpct">-</div></div>
+              <div class="scell"><div class="scl">LOB%</div><div class="scv cn" id="asp-lob">-</div></div>
+              <div class="scell"><div class="scl">BABIP</div><div class="scv cn" id="asp-babip">-</div></div>
+              <div class="scell"><div class="scl">H/A ERA</div><div class="scv cn" id="asp-split">-</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:.59rem;color:var(--m1)">L3 Trend:</span>
+              <span id="asp-trend" style="font-size:.85rem">-</span>
+              <span id="asp-tlbl" style="font-family:'IBM Plex Mono',monospace;font-size:.59rem;color:var(--m2)">loading...</span>
+            </div>
+            <div class="sr"><label>Quality Score <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="aPQ" min="0" max="10" step=".05" value="5.5" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2)"><span class="rv">5.50</span></div></div>
+            <div class="sr"><label>Days Rest <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="aRest" min="1" max="10" step="1" value="5" oninput="this.nextElementSibling.textContent=this.value+'d'"><span class="rv">5d</span></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd">&#128170; Bullpen Fatigue <span class="tag tf">LAST 3 DAYS AUTO</span></div>
+          <div class="g2">
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--m1);margin-bottom:4px">&#127968; Home Bullpen</div>
+              <div id="hbull-bars"><div class="ldg"><span class="spin"></span>Loading...</div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px solid var(--b1)">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:.59rem;color:var(--m1)">Fatigue-adj ERA</span>
+                <span id="hbull-era" style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem">-</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--m1);margin-bottom:4px">&#9992; Away Bullpen</div>
+              <div id="abull-bars"><div class="ldg"><span class="spin"></span>Loading...</div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px solid var(--b1)">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:.59rem;color:var(--m1)">Fatigue-adj ERA</span>
+                <span id="abull-era" style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="g2" style="margin-top:8px">
+            <div class="sr"><label>Home Bull ERA (adj) <span class="tag tf">AUTO</span></label><div class="rr"><input type="range" id="hBull" min="2" max="8" step=".1" value="3.8" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2)"><span class="rv">3.80</span></div></div>
+            <div class="sr"><label>Away Bull ERA (adj) <span class="tag tf">AUTO</span></label><div class="rr"><input type="range" id="aBull" min="2" max="8" step=".1" value="4.1" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2)"><span class="rv">4.10</span></div></div>
+          </div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-hd">&#128203; Home Lineup <span id="hl-tag" class="tag tm">PENDING</span></div>
+            <div class="lu-tabs"><button class="lu-tab active" id="hl-pb" onclick="showLU('home','proj')">Projected</button><button class="lu-tab" id="hl-cb" onclick="showLU('home','conf')" style="display:none">&#10003; Confirmed</button></div>
+            <div id="hl-proj-wrap"><div class="pend">Fetching lineup...</div></div>
+            <div id="hl-conf-wrap" style="display:none"></div>
+            <div id="hl-note" class="lcn lcn-p" style="display:none"></div>
+            <div class="sr" style="margin-top:8px"><label>Lineup Heat Score <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="hWrc" min="55" max="145" step="1" value="105" oninput="this.nextElementSibling.textContent=this.value"><span class="rv">105</span></div></div>
+            <div class="sr"><label>Lineup Confidence</label><div class="rr"><input type="range" id="hLConf" min=".5" max="1" step=".05" value=".85" oninput="this.nextElementSibling.textContent=(this.value*100|0)+'%'"><span class="rv">85%</span></div></div>
+          </div>
+          <div class="card">
+            <div class="card-hd">&#128203; Away Lineup <span id="al-tag" class="tag tm">PENDING</span></div>
+            <div class="lu-tabs"><button class="lu-tab active" id="al-pb" onclick="showLU('away','proj')">Projected</button><button class="lu-tab" id="al-cb" onclick="showLU('away','conf')" style="display:none">&#10003; Confirmed</button></div>
+            <div id="al-proj-wrap"><div class="pend">Fetching lineup...</div></div>
+            <div id="al-conf-wrap" style="display:none"></div>
+            <div id="al-note" class="lcn lcn-p" style="display:none"></div>
+            <div class="sr" style="margin-top:8px"><label>Lineup Heat Score <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="aWrc" min="55" max="145" step="1" value="98" oninput="this.nextElementSibling.textContent=this.value"><span class="rv">98</span></div></div>
+            <div class="sr"><label>Lineup Confidence</label><div class="rr"><input type="range" id="aLConf" min=".5" max="1" step=".05" value=".85" oninput="this.nextElementSibling.textContent=(this.value*100|0)+'%'"><span class="rv">85%</span></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd">&#9881; Game Conditions</div>
+          <div class="g3">
+            <div class="sr"><label>Park Factor <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="pf" min="80" max="120" step="1" value="100" oninput="this.nextElementSibling.textContent=this.value"><span class="rv">100</span></div></div>
+            <div class="sr"><label>Wind Speed (mph)</label><div class="rr"><input type="range" id="wndS" min="0" max="25" step="1" value="8" oninput="this.nextElementSibling.textContent=this.value+'mph'"><span class="rv">8mph</span></div></div>
+            <div class="sr"><label>Wind Direction</label><select id="wndD"><option value="0">Cross/Neutral</option><option value="1">Blowing Out</option><option value="-1">Blowing In</option></select></div>
+            <div class="sr"><label>Temperature (F)</label><div class="rr"><input type="range" id="tmpF" min="40" max="100" step="1" value="72" oninput="this.nextElementSibling.textContent=this.value+'F'"><span class="rv">72F</span></div></div>
+            <div class="sr"><label>Umpire Run Adj <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="umpAdj" min="-0.5" max="0.5" step=".05" value="0" oninput="this.nextElementSibling.textContent=(this.value>0?'+':'')+parseFloat(this.value).toFixed(2)"><span class="rv">0.00</span></div></div>
+            <div class="sr"><label>Market ML (Home)</label><input type="number" id="mktML" value="-120"></div>
+          </div>
+        </div>
+        <button class="run-btn" onclick="calcModel()">&#9889; Run Full Model</button>
+        <div id="m-result" style="display:none;margin-top:14px">
+          <div class="mrow" id="m-metrics"></div>
+          <div id="m-verdict"></div>
+          <hr class="dv">
+          <div class="seclbl">Factor Breakdown</div>
+          <div id="m-factors" style="margin-bottom:8px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PITCHING TAB -->
+    <div class="panel" id="panel-pitching">
+      <div id="pt-none" class="nosel"><div class="nosel-ico">&#9918;</div>Select a game to view pitching data</div>
+      <div id="pt-body" style="display:none"></div>
+    </div>
+
+    <!-- BATTING TAB -->
+    <div class="panel" id="panel-batting">
+      <div id="bat-none" class="nosel"><div class="nosel-ico">&#127944;</div>Select a game to view batting data</div>
+      <div id="bat-body" style="display:none"></div>
+    </div>
+
+    <!-- TOTALS TAB -->
+    <div class="panel" id="panel-totals">
+      <div id="tt-none" class="nosel"><div class="nosel-ico">&#128202;</div>Select a game to run totals model</div>
+      <div id="tt-body" style="display:none">
+        <div class="prior-box">
+          <div class="prior-hd">&#128197; Prior Year Run Environment</div>
+          <div class="g2">
+            <div>
+              <div class="sr"><label>Home SP Prior ERA</label><input type="number" id="thPrior" value="3.75" step=".01" oninput="calcTotals()"></div>
+              <div class="sr"><label>Home Bull Prior ERA</label><input type="number" id="thBP" value="3.60" step=".01" oninput="calcTotals()"></div>
+            </div>
+            <div>
+              <div class="sr"><label>Away SP Prior ERA</label><input type="number" id="taPrior" value="4.10" step=".01" oninput="calcTotals()"></div>
+              <div class="sr"><label>Away Bull Prior ERA</label><input type="number" id="taBP" value="4.00" step=".01" oninput="calcTotals()"></div>
+            </div>
+          </div>
+          <div class="blend-track"><div class="bt-p" id="btp-t" style="width:90%"></div><div class="bt-c" id="btc-t" style="width:10%"></div></div>
+          <div class="bl-row"><span style="color:var(--y)" id="blp-t">Prior 90%</span><span style="color:var(--ac)" id="blc-t">Current 10%</span></div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-hd">&#128202; Pitching</div>
+            <div class="sr"><label>Home SP Quality <span class="tag tl">LIVE</span></label><div class="rr"><input type="range" id="thPQ" min="0" max="10" step=".05" value="6" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2);calcTotals()"><span class="rv">6.00</span></div></div>
+            <div class="sr"><label>Away SP Quality <span class="tag tl">LIVE</span></label><div class="rr"><input type="range" id="taPQ" min="0" max="10" step=".05" value="5.5" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2);calcTotals()"><span class="rv">5.50</span></div></div>
+            <div class="sr"><label>Home Bull ERA <span class="tag tf">AUTO</span></label><div class="rr"><input type="range" id="thBull" min="2" max="8" step=".1" value="3.8" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2);calcTotals()"><span class="rv">3.80</span></div></div>
+            <div class="sr"><label>Away Bull ERA <span class="tag tf">AUTO</span></label><div class="rr"><input type="range" id="taBull" min="2" max="8" step=".1" value="4.1" oninput="this.nextElementSibling.textContent=parseFloat(this.value).toFixed(2);calcTotals()"><span class="rv">4.10</span></div></div>
+          </div>
+          <div class="card">
+            <div class="card-hd">&#127777; Environment</div>
+            <div class="sr"><label>Park Factor <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="tpf" min="80" max="120" step="1" value="100" oninput="this.nextElementSibling.textContent=this.value;calcTotals()"><span class="rv">100</span></div></div>
+            <div class="sr"><label>Wind Effect</label><select id="twnd" onchange="calcTotals()"><option value="0">Cross/Neutral</option><option value=".25">Out-Light</option><option value=".5">Out-Strong</option><option value="-.25">In-Light</option><option value="-.5">In-Strong</option></select></div>
+            <div class="sr"><label>Temperature</label><div class="rr"><input type="range" id="ttmp" min="40" max="100" step="1" value="72" oninput="this.nextElementSibling.textContent=this.value+'F';calcTotals()"><span class="rv">72F</span></div></div>
+            <div class="sr"><label>Home Lineup Heat <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="thWrc" min="55" max="145" step="1" value="105" oninput="this.nextElementSibling.textContent=this.value;calcTotals()"><span class="rv">105</span></div></div>
+            <div class="sr"><label>Away Lineup Heat <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="taWrc" min="55" max="145" step="1" value="98" oninput="this.nextElementSibling.textContent=this.value;calcTotals()"><span class="rv">98</span></div></div>
+            <div class="sr"><label>Umpire Run Adj <span class="tag tl">AUTO</span></label><div class="rr"><input type="range" id="tumpAdj" min="-0.5" max="0.5" step=".05" value="0" oninput="this.nextElementSibling.textContent=(this.value>0?'+':'')+parseFloat(this.value).toFixed(2);calcTotals()"><span class="rv">0.00</span></div></div>
+            <div class="sr"><label>Market O/U</label><input type="number" id="tmkt" value="8.5" step=".5" min="5" max="16" oninput="calcTotals()"></div>
+          </div>
+        </div>
+        <div class="mrow" id="t-metrics"></div>
+        <div id="t-verdict"></div>
+        <hr class="dv"><div class="seclbl">Score Distribution (Poisson)</div>
+        <div id="t-poisson"></div>
+      </div>
+    </div>
+
+    <!-- INTEL TAB -->
+    <div class="panel" id="panel-intel">
+      <div id="it-none" class="nosel"><div class="nosel-ico">&#128269;</div>Select a game to view scouting intel</div>
+      <div id="it-body" style="display:none">
+        <div class="card"><div class="card-hd">&#9878; Umpire <span class="tag tl">AUTO</span></div><div id="ump-wrap"></div></div>
+        <div class="g2">
+          <div class="card"><div class="card-hd">&#127968; Home Team Stats <span class="tag tl">LIVE</span></div><div id="hteam-wrap"></div></div>
+          <div class="card"><div class="card-hd">&#9992; Away Team Stats <span class="tag tl">LIVE</span></div><div id="ateam-wrap"></div></div>
+        </div>
+        <div class="g2">
+          <div class="card"><div class="card-hd">&#128293; Home Batter Streaks <span class="tag tl">LAST 14 DAYS</span></div><div id="h-heat"></div></div>
+          <div class="card"><div class="card-hd">&#128293; Away Batter Streaks <span class="tag tl">LAST 14 DAYS</span></div><div id="a-heat"></div></div>
+        </div>
+        <div class="g2">
+          <div class="card"><div class="card-hd">&#128200; Home SP Last 3 Starts</div><div id="hsp-form"></div></div>
+          <div class="card"><div class="card-hd">&#128200; Away SP Last 3 Starts</div><div id="asp-form"></div></div>
+        </div>
+        <div class="g2">
+          <div class="card"><div class="card-hd">&#127919; Home Pitch Mix <span class="tag ts">SAVANT</span></div><div id="h-mix"></div></div>
+          <div class="card"><div class="card-hd">&#127919; Away Pitch Mix <span class="tag ts">SAVANT</span></div><div id="a-mix"></div></div>
+        </div>
+        <div class="g2">
+          <div class="card"><div class="card-hd">&#128640; Home Statcast <span class="tag ts">SAVANT</span></div><div id="h-sc"></div></div>
+          <div class="card"><div class="card-hd">&#128640; Away Statcast <span class="tag ts">SAVANT</span></div><div id="a-sc"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KELLY TAB -->
+    <div class="panel" id="panel-kelly">
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd">&#128208; Kelly Calculator</div>
+          <div class="sr"><label>Win Probability (%)</label><div class="rr"><input type="range" id="kwp" min="1" max="99" step=".5" value="55" oninput="this.nextElementSibling.textContent=this.value+'%';calcKelly()"><span class="rv">55%</span></div></div>
+          <div class="sr"><label>Odds (American)</label><input type="number" id="kods" value="-110" onchange="calcKelly()"></div>
+          <div class="sr"><label>Bankroll ($)</label><input type="number" id="kbr" value="1000" onchange="calcKelly()"></div>
+          <div class="sr"><label>Kelly Fraction</label><div class="rr"><input type="range" id="kfr" min=".1" max="1" step=".1" value=".5" oninput="this.nextElementSibling.textContent=(this.value*100|0)+'%';calcKelly()"><span class="rv">50%</span></div></div>
+        </div>
+        <div class="card"><div class="card-hd">&#128200; Output</div><div id="k-out"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd">&#128203; Bet Tracker</div>
+        <div class="g3">
+          <div class="sr"><label>Label</label><input type="text" id="btlbl" placeholder="NYY ML"></div>
+          <div class="sr"><label>Stake ($)</label><input type="number" id="btstk" value="50"></div>
+          <div class="sr"><label>Odds</label><input type="number" id="btods" value="-110"></div>
+        </div>
+        <button class="run-btn" onclick="addBet()">+ Add Bet</button>
+        <table class="bt-tbl"><thead><tr><th>Label</th><th>Stake</th><th>Odds</th><th>To Win</th><th>Result</th></tr></thead><tbody id="bt-body"></tbody><tfoot id="bt-foot"></tfoot></table>
+      </div>
+    </div>
+
+    <!-- TOOLS TAB -->
+    <div class="panel" id="panel-tools">
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd">&#128260; Odds Converter</div>
+          <div class="sr"><label>American</label><input type="number" id="ocam" value="-110" oninput="cvt('am')"></div>
+          <div class="sr"><label>Decimal</label><input type="number" id="ocdec" step=".001" value="1.909" oninput="cvt('dec')"></div>
+          <div class="sr"><label>Fractional</label><input type="text" id="ocfrac" value="10/11" oninput="cvt('frac')"></div>
+          <div class="sr"><label>Implied Prob (%)</label><input type="number" id="ocimp" step=".1" value="52.4" oninput="cvt('imp')"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd">&#128176; Expected Value</div>
+          <div class="sr"><label>Win Prob (%)</label><div class="rr"><input type="range" id="evwp" min="1" max="99" step=".5" value="55" oninput="this.nextElementSibling.textContent=this.value+'%';calcEV()"><span class="rv">55%</span></div></div>
+          <div class="sr"><label>Odds</label><input type="number" id="evods" value="-110" oninput="calcEV()"></div>
+          <div class="sr"><label>Stake ($)</label><input type="number" id="evstk" value="100" oninput="calcEV()"></div>
+          <div id="ev-out" style="margin-top:9px"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">&#129518; Vig Remover</div>
+        <div class="g2">
+          <div class="sr"><label>Side A</label><input type="number" id="viga" value="-110" oninput="calcVig()"></div>
+          <div class="sr"><label>Side B</label><input type="number" id="vigb" value="-110" oninput="calcVig()"></div>
+        </div>
+        <div id="vig-out" style="margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:.74rem;line-height:2"></div>
+      </div>
+    </div>
+
+    <p class="disc">&#9888; DiamondEdge uses MLB Stats API (statsapi.mlb.com) and Baseball Savant CSV exports. Statcast data may lag 24-48 hrs. Projected lineups are estimates. Umpire data is historical. For analytical/educational use only. Gamble responsibly.</p>
+  </div>
+</div>
+
+<script>
+// CORS proxies - tries each in order until one works
+const MLB_BASE = 'https://statsapi.mlb.com/api/v1';
+const MLB_BASE_V11 = 'https://statsapi.mlb.com/api/v1.1';
+const PROXIES = [
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+];
+let activeProxy = 0;
+
+function proxyUrl(url) {
+  return PROXIES[activeProxy] + encodeURIComponent(url);
+}
+const API = MLB_BASE;
+let selGame=null,games=[],bets=[],S={};
+const PF={109:105,144:99,110:98,111:103,112:104,145:97,113:106,114:97,115:113,116:97,117:98,118:99,108:100,119:102,146:93,158:96,142:102,121:99,147:101,133:95,143:101,134:97,135:94,137:96,136:95,138:99,139:97,140:103,141:100,120:100};
+const UMPS={'Angel Hernandez':{adj:.12,zone:'Wide',notes:'Generous zone'},'CB Bucknor':{adj:.18,zone:'Wide',notes:'Hitter-friendly'},'Doug Eddings':{adj:-.08,zone:'Tight',notes:'Pitcher-friendly'},'Lance Barksdale':{adj:.05,zone:'Avg',notes:'Near league average'},'Jim Wolf':{adj:-.15,zone:'Tight',notes:'Very pitcher-friendly'},'Tom Hallion':{adj:-.05,zone:'Avg',notes:'Slightly pitcher-friendly'},'Dan Iassogna':{adj:.08,zone:'Wide',notes:'Wider outside corner'},'Ted Barrett':{adj:-.10,zone:'Tight',notes:'Tight zone'},'Phil Cuzzi':{adj:.07,zone:'Wide',notes:'Wide on corners'},'Brian Gorman':{adj:.02,zone:'Avg',notes:'Near average'},'Alfonso Marquez':{adj:-.06,zone:'Tight',notes:'Pitcher-friendly'},'Chris Guccione':{adj:-.03,zone:'Avg',notes:'Near average'},'Bill Miller':{adj:.08,zone:'Wide',notes:'Wide zone'},'Gerry Davis':{adj:-.02,zone:'Avg',notes:'Neutral'},'Mark Carlson':{adj:.03,zone:'Avg',notes:'Neutral'},'Tony Randazzo':{adj:.04,zone:'Avg',notes:'Slightly wide'},'Mike Muchlinski':{adj:.05,zone:'Avg',notes:'Slightly wide'},"Brian O'Nora":{adj:-.08,zone:'Tight',notes:'Tight zone'},'Joe West':{adj:.10,zone:'Wide',notes:'Large zone'},'Marvin Hudson':{adj:-.05,zone:'Avg',notes:'Below average runs'}};
+
+function tick(){document.getElementById('htime').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+setInterval(tick,15000);tick();
+function a2p(o){o=+o;return o<0?(-o)/(-o+100):100/(o+100);}
+function p2a(p){return p>=.5?Math.round(-p/(1-p)*100):Math.round((1-p)/p*100);}
+function safe(fn,fb){try{const v=fn();return(v===null||v===undefined||isNaN(v))?fb:v;}catch(e){return fb;}}
+function setSlider(id,val,suf){
+  const el=document.getElementById(id);if(!el)return;
+  const n=parseFloat(val);if(isNaN(n))return;
+  el.value=n;
+  const s=el.nextElementSibling;
+  if(s&&s.classList.contains('rv'))s.textContent=(Number.isInteger(n)?n:n.toFixed(2))+(suf||'');
+}
+function setCell(id,val,cls){const el=document.getElementById(id);if(!el)return;el.textContent=val;el.className='scv '+(cls||'cn');}
+function cERA(v){return v<3.5?'cg':v<4.5?'cn':v<5.5?'cy':'cb';}
+function cKpct(v){return v>26?'cg':v>20?'cn':v>15?'cy':'cb';}
+function cBBpct(v){return v<5?'cg':v<8?'cn':v<11?'cy':'cb';}
+function cHR9(v){return v<.8?'cg':v<1.2?'cn':v<1.6?'cy':'cb';}
+function cGBpct(v){return v>50?'cg':v>42?'cn':v>35?'cy':'cb';}
+function cLOB(v){return v>76?'cg':v>70?'cn':v>64?'cy':'cb';}
+function cBABIP(v){return v<.275?'cg':v<.310?'cn':v<.340?'cy':'cb';}
+function cOPS(v){return v>.800?'cg':v>.720?'cn':v>.640?'cy':'cb';}
+function todayStr(){return new Date().toISOString().split('T')[0];}
+function daysAgoStr(n){const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().split('T')[0];}
+async function safeGet(url) {
+  // First try direct — works when hosted on GitHub Pages or any real domain
+  try {
+    const r = await fetch(url, {headers:{'Accept':'application/json'}});
+    if (r.ok) return await r.json();
+  } catch(e) {}
+
+  // Fallback: try CORS proxies in order
+  for (let i = 0; i < PROXIES.length; i++) {
+    const idx = (activeProxy + i) % PROXIES.length;
+    try {
+      const proxied = PROXIES[idx] + encodeURIComponent(url);
+      const r = await fetch(proxied);
+      if (r.ok) {
+        const data = await r.json();
+        activeProxy = idx;
+        return data;
+      }
+    } catch(e) {}
+  }
+  return null;
+}
+
+function getBlend(){
+  const w=+document.getElementById('sweek').value;
+  let p=w<=4?.90-(w-1)*.05:w<=10?.75-(w-4)*.058:w<=18?.40-(w-10)*.04:.05;
+  p=Math.max(.05,Math.min(.95,p));return{p,c:1-p};
+}
+function thresh(){const w=+document.getElementById('sweek').value;return w<=3?6:w<=6?5:w<=12?4:3;}
+function bld(pr,cu){const{p,c}=getBlend();return pr*p+cu*c;}
+function updateWeek(){
+  const w=+document.getElementById('sweek').value;
+  const{p,c}=getBlend();const th=thresh();
+  const pp=(p*100).toFixed(0),cp=(c*100).toFixed(0);
+  document.getElementById('wchip').textContent='Week '+w;
+  document.getElementById('bc-p').textContent='Prior: '+pp+'%';
+  document.getElementById('bc-c').textContent='Current: '+cp+'%';
+  document.getElementById('bc-t').textContent='Edge min: '+th+'%';
+  const ph=document.getElementById('pchip');
+  if(w<=6){ph.textContent='Early Season';ph.className='pchip pe';}
+  else if(w<=16){ph.textContent='Mid Season';ph.className='pchip pm';}
+  else{ph.textContent='Late Season';ph.className='pchip pl';}
+  ['m','t'].forEach(x=>{
+    const bp=document.getElementById('btp-'+x),bc=document.getElementById('btc-'+x);
+    if(bp){bp.style.width=pp+'%';bc.style.width=cp+'%';}
+    const lp=document.getElementById('blp-'+x),lc=document.getElementById('blc-'+x);
+    if(lp)lp.textContent='Prior '+pp+'%';if(lc)lc.textContent='Current '+cp+'%';
+  });
+  const pn=document.getElementById('pnote');if(pn)pn.textContent='weighted '+pp+'% at Week '+w;
+  const cn=document.getElementById('cn-m');
+  if(cn){
+    if(w<=4){cn.className='cnote cnlo';cn.innerHTML='Low confidence - Weeks 1-4. Requiring '+th+'% edge minimum.';}
+    else if(w<=10){cn.className='cnote cnme';cn.innerHTML='Medium confidence - Week '+w+'. Threshold: '+th+'%.';}
+    else{cn.className='cnote cnhi';cn.innerHTML='High confidence - Week '+w+'. Current stats dominant. Threshold: '+th+'%.';}
+  }
+  calcTotals();
+}
+
+function swTab(n,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+n).classList.add('active');el.classList.add('active');
+  if(n==='totals')calcTotals();if(n==='kelly')calcKelly();
+  if(n==='tools'){cvt('am');calcEV();calcVig();}
+  if(n==='pitching')renderPitchingTab();
+  if(n==='batting')renderBattingTab();
+}
+
+function calcPQS(d){
+  const eS=Math.max(0,Math.min(10,10-(d.era-1)*1.4));
+  const fS=Math.max(0,Math.min(10,10-(d.fip-1)*1.4));
+  const wS=Math.max(0,Math.min(10,10-(d.whip-.9)*6));
+  const kS=Math.max(0,Math.min(10,(d.kpct-8)/2.2));
+  const bS=Math.max(0,Math.min(10,(11-d.bbpct)/1.1));
+  const hS=Math.max(0,Math.min(10,(2.5-d.hr9)/.25));
+  const gS=Math.max(0,Math.min(10,(d.gbpct-30)/2.5));
+  const lS=Math.max(0,Math.min(10,(d.lob-55)/2.5));
+  const tS=d.l3era<d.era-.5?8:d.l3era>d.era+.5?3:5.5;
+  const rS=d.rest>=5?10:d.rest===4?8:d.rest===3?6:d.rest===2?3:1;
+  return eS*.15+fS*.20+wS*.12+kS*.15+bS*.10+hS*.08+gS*.07+lS*.05+tS*.05+rS*.03;
+}
+
+async function loadGames(){
+  const gl=document.getElementById('glist');
+  gl.innerHTML='<div class="nogames"><span class="spin"></span><br>Loading today's games...</div>';
+  
+  // Try up to 3 times with a short delay between attempts
+  let d=null;
+  for(let attempt=1;attempt<=3;attempt++){
+    d=await safeGet(API+'/schedule?sportId=1&date='+todayStr()+'&hydrate=probablePitcher,lineScore');
+    if(d)break;
+    if(attempt<3){
+      gl.innerHTML='<div class="nogames"><span class="spin"></span><br>Retrying ('+attempt+'/3)...</div>';
+      await new Promise(r=>setTimeout(r,1500));
+    }
+  }
+  
+  if(!d){
+    gl.innerHTML='<div class="nogames" style="line-height:1.8">'
+      +'<div style="font-size:1.2rem;margin-bottom:6px">&#9888;</div>'
+      +'<div style="color:var(--r);margin-bottom:8px">Could not reach MLB API</div>'
+      +'<div style="font-size:.6rem;color:var(--m1);margin-bottom:10px">This app must be opened from a hosted URL (e.g. GitHub Pages), not a local file. If you are on GitHub Pages, the API may be temporarily slow.</div>'
+      +'<button onclick="loadGames()" style="font-family:'IBM Plex Mono',monospace;font-size:.65rem;background:var(--ac);color:#000;border:none;padding:6px 14px;border-radius:3px;cursor:pointer;font-weight:600">&#8635; Try Again</button>'
+      +'</div>';
+    return;
+  }
+  
+  games=(d.dates&&d.dates[0]&&d.dates[0].games)||[];
+  if(!games.length){
+    gl.innerHTML='<div class="nogames">'
+      +'No MLB games scheduled today.<br><br>'
+      +'<button onclick="loadGames()" style="font-family:'IBM Plex Mono',monospace;font-size:.65rem;background:var(--surf2);color:var(--m2);border:1px solid var(--b1);padding:5px 12px;border-radius:3px;cursor:pointer">&#8635; Refresh</button>'
+      +'</div>';
+    return;
+  }
+  // Show connection success status
+  const statusEl = document.getElementById('api-status');
+  if(statusEl){
+    statusEl.style.display='block';
+    statusEl.innerHTML='<span style="color:var(--ac)">&#9679;</span> Connected &mdash; '+games.length+' game'+(games.length!==1?'s':'')+' today';
+  }
+  document.getElementById('glist').innerHTML=games.map((g,i)=>{
+    const h=g.teams.home.team,a=g.teams.away.team;
+    const hp=g.teams.home.probablePitcher,ap=g.teams.away.probablePitcher;
+    const t=new Date(g.gameDate).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    const st=g.status.abstractGameState;
+    const sc=st==='Live'?'gst-live':st==='Final'?'gst-fin':'gst-pre';
+    const sl=st==='Live'?'LIVE':st==='Final'?'FINAL':'PREVIEW';
+    return '<div class="gc" id="gc'+i+'" onclick="selectGame('+i+')">'
+      +'<div class="gc-row"><span class="gc-tn">'+(a.abbreviation||a.name)+'</span><span class="gc-tm">'+t+'</span><span class="gc-tn">'+(h.abbreviation||h.name)+'</span></div>'
+      +'<div class="gc-sp"><span class="gc-p">'+(ap?ap.fullName:'TBD')+'</span><span class="gc-p" style="text-align:right">'+(hp?hp.fullName:'TBD')+'</span></div>'
+      +'<span class="gst '+sc+'">'+sl+'</span></div>';
+  }).join('');
+}
+
+async function selectGame(i){
+  document.querySelectorAll('.gc').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('gc'+i).classList.add('sel');
+  selGame=games[i];S={};
+  ['m-none','tt-none','it-none','pt-none','bat-none'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  ['m-body','tt-body','it-body','pt-body','bat-body'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='block';});
+  document.getElementById('m-result').style.display='none';
+  const H=selGame.teams.home.team,A=selGame.teams.away.team;
+  const hpf=PF[H.id]||100;
+  S.hSP=selGame.teams.home.probablePitcher;S.aSP=selGame.teams.away.probablePitcher;
+  S.hId=H.id;S.aId=A.id;
+  setSlider('pf',hpf);setSlider('tpf',hpf);
+  document.getElementById('hsp-nm').textContent=S.hSP?S.hSP.fullName:'TBD';
+  document.getElementById('asp-nm').textContent=S.aSP?S.aSP.fullName:'TBD';
+  const gt=new Date(selGame.gameDate);
+  document.getElementById('gdh-wrap').innerHTML='<div class="gdh"><div class="gdh-top">'
+    +'<div class="gdh-side"><div class="gdh-tn">'+H.name+'</div><div class="gdh-sp">SP: '+(S.hSP?S.hSP.fullName:'TBD')+'</div></div>'
+    +'<div class="gdh-vs">VS</div>'
+    +'<div class="gdh-side" style="text-align:right"><div class="gdh-tn">'+A.name+'</div><div class="gdh-sp">SP: '+(S.aSP?S.aSP.fullName:'TBD')+'</div></div>'
+    +'</div><div class="gdh-meta">'
+    +'<span class="gdh-mi">Time:<span>'+gt.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})+'</span></span>'
+    +'<span class="gdh-mi">Park Factor:<span>'+hpf+'</span></span>'
+    +'<span class="gdh-mi">Status:<span>'+selGame.status.detailedState+'</span></span>'
+    +'</div></div>';
+  await Promise.all([
+    loadSP(S.hSP,'home',H.id),loadSP(S.aSP,'away',A.id),
+    loadTeam(H.id,'home'),loadTeam(A.id,'away'),
+    loadBull(H.id,'home'),loadBull(A.id,'away'),
+    loadLineups(selGame.gamePk,S.hSP,S.aSP),
+    loadUmpire(selGame.gamePk),
+    S.hSP?loadSavant(S.hSP.id,'home'):Promise.resolve(),
+    S.aSP?loadSavant(S.aSP.id,'away'):Promise.resolve(),
+  ]);
+  calcTotals();
+}
+
+async function loadSP(sp,side,teamId){
+  const pfx=side==='home'?'h':'a';
+  if(!sp){setCell(pfx+'sp-era','N/A');const t=document.getElementById(pfx+'sp-tag');if(t){t.className='tag tm';t.textContent='TBD';}return;}
+  const pid=sp.id;
+  const[seaD,logD,splitD]=await Promise.all([
+    safeGet(API+'/people/'+pid+'/stats?stats=season&group=pitching&sportId=1'),
+    safeGet(API+'/people/'+pid+'/stats?stats=gameLog&group=pitching&sportId=1&limit=8'),
+    safeGet(API+'/people/'+pid+'/stats?stats=statSplits&group=pitching&sportId=1&sitCodes=h,a'),
+  ]);
+  const st=seaD?.stats?.[0]?.splits?.[0]?.stat||{};
+  const logs=logD?.stats?.[0]?.splits||[];
+  const splitSplits=splitD?.stats?.[0]?.splits||[];
+  const era=safe(()=>Math.max(1,Math.min(9,+st.era)),4.20);
+  const fip=safe(()=>Math.max(1,Math.min(9,+st.fieldingIndependentPitching||+st.fip||era)),era);
+  const whip=safe(()=>Math.max(.7,Math.min(2.5,+st.whip)),1.30);
+  const k=safe(()=>+st.strikeOuts,0),bb=safe(()=>+st.baseOnBalls,1);
+  const bf=safe(()=>+st.battersFaced||+st.bfp,Math.max(1,k+bb+10));
+  const ip=safe(()=>parseFloat(st.inningsPitched),1);
+  const kpct=safe(()=>(k/Math.max(1,bf))*100,20);
+  const bbpct=safe(()=>(bb/Math.max(1,bf))*100,8);
+  const hr=safe(()=>+st.homeRuns,0);
+  const hr9=safe(()=>Math.min(4,Math.max(0,(hr/Math.max(1,ip))*9)),1.2);
+  const lob=safe(()=>+st.leftOnBasePercentage||72,72);
+  const babip=safe(()=>+st.babip,.300);
+  const gbraw=safe(()=>+st.groundOutsToAirouts,1);
+  const gbpct=safe(()=>gbraw/(gbraw+1)*100,42);
+  const isHome=side==='home';
+  const relSplit=splitSplits.find(s=>s.split?.code===(isHome?'h':'a'));
+  const splitERA=relSplit?.stat?.era?Math.max(1,Math.min(9,+relSplit.stat.era)):era;
+  let rest=5;
+  if(logs.length>0&&logs[0].date){const diff=Math.round((new Date()-new Date(logs[0].date))/864e5);rest=Math.max(1,Math.min(10,diff));}
+  const last3=logs.slice(0,3);
+  let l3era=era,l3whip=whip;
+  if(last3.length>0){
+    let tER=0,tIP=0,tBB=0,tH=0,tIPw=0;
+    last3.forEach(g=>{tER+=safe(()=>+g.stat.earnedRuns,0);tIP+=safe(()=>parseFloat(g.stat.inningsPitched),1);tBB+=safe(()=>+g.stat.baseOnBalls,0);tH+=safe(()=>+g.stat.hits,0);tIPw+=safe(()=>parseFloat(g.stat.inningsPitched),1);});
+    if(tIP>0)l3era=(tER/tIP)*9;if(tIPw>0)l3whip=(tBB+tH)/tIPw;
+  }
+  const tDir=l3era<era-.4?'up':l3era>era+.4?'dn':'fl';
+  const tSym=tDir==='up'?'&#9650;':tDir==='dn'?'&#9660;':'&#8594;';
+  const pd={era,fip,whip,kpct,bbpct,hr9,gbpct,lob,babip,splitERA,rest,l3era,l3whip};
+  S[pfx+'SP']=pd;
+  const pqs=calcPQS(pd);
+  setCell(pfx+'sp-era',era.toFixed(2),cERA(era));
+  setCell(pfx+'sp-fip',fip.toFixed(2),cERA(fip));
+  setCell(pfx+'sp-whip',whip.toFixed(2),'cn');
+  setCell(pfx+'sp-kpct',kpct.toFixed(1)+'%',cKpct(kpct));
+  setCell(pfx+'sp-bbpct',bbpct.toFixed(1)+'%',cBBpct(bbpct));
+  setCell(pfx+'sp-hr9',hr9.toFixed(2),cHR9(hr9));
+  setCell(pfx+'sp-gbpct',gbpct.toFixed(1)+'%',cGBpct(gbpct));
+  setCell(pfx+'sp-lob',lob.toFixed(1)+'%',cLOB(lob));
+  setCell(pfx+'sp-babip',babip.toFixed(3),cBABIP(babip));
+  setCell(pfx+'sp-split',splitERA.toFixed(2),cERA(splitERA));
+  const tEl=document.getElementById(pfx+'sp-trend');const tLbl=document.getElementById(pfx+'sp-tlbl');
+  if(tEl){tEl.innerHTML=tSym;tEl.className='t'+tDir;}
+  if(tLbl)tLbl.textContent='L3 ERA: '+l3era.toFixed(2)+' | L3 WHIP: '+l3whip.toFixed(2);
+  setSlider(pfx+'PQ',pqs.toFixed(2));setSlider(pfx+'Rest',rest,'d');setSlider('t'+pfx.toUpperCase()+'PQ',pqs.toFixed(2));
+  const tagEl=document.getElementById(pfx+'sp-tag');if(tagEl){tagEl.className='tag tl';tagEl.textContent='LIVE';}
+  const formEl=document.getElementById(pfx+'sp-form');
+  if(formEl){
+    if(last3.length===0){formEl.innerHTML='<div style="color:var(--m1);font-family:\'IBM Plex Mono\',monospace;font-size:.62rem">Insufficient game log data yet.</div>';return;}
+    const hdr='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-family:\'IBM Plex Mono\',monospace;font-size:.55rem;color:var(--m1);margin-bottom:4px"><span>Date</span><span>IP</span><span>ER</span><span>H</span><span>BB</span><span>K</span><span>NP</span></div>';
+    const rows=last3.map(g=>{
+      const gip=safe(()=>parseFloat(g.stat.inningsPitched),0),ger=safe(()=>+g.stat.earnedRuns,0);
+      const gh=safe(()=>+g.stat.hits,0),gbb=safe(()=>+g.stat.baseOnBalls,0);
+      const gk=safe(()=>+g.stat.strikeOuts,0),gnp=safe(()=>+g.stat.numberOfPitches,0);
+      const sERA=gip>0?(ger/gip)*9:0;
+      const col=sERA<3?'var(--ac)':sERA<5?'var(--y)':'var(--r)';
+      return '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-family:\'IBM Plex Mono\',monospace;font-size:.63rem;margin-bottom:2px"><span>'+(g.date||'-')+'</span><span>'+gip+'</span><span style="color:'+col+'">'+ger+'</span><span>'+gh+'</span><span>'+gbb+'</span><span>'+gk+'</span><span style="color:var(--m2)">'+gnp+'</span></div>';
+    }).join('');
+    const bn=babip<.285?'Lucky (ERA likely to rise)':babip>.315?'Unlucky (ERA likely to fall)':'Near expected';
+    formEl.innerHTML=hdr+rows+'<div style="margin-top:7px;font-family:\'IBM Plex Mono\',monospace;font-size:.61rem;color:var(--m2)">H/A Split ERA: <span style="color:'+(splitERA<era?'var(--ac)':'var(--r)')+'">'+splitERA.toFixed(2)+'</span> vs Season: '+era.toFixed(2)+'<br>BABIP: <span style="color:'+(babip<.285?'var(--ac)':babip>.315?'var(--r)':'var(--y)')+'">'+babip.toFixed(3)+'</span> - '+bn+'</div>';
+  }
+}
+
+async function loadTeam(tid,side){
+  const pfx=side==='home'?'h':'a';
+  const[pitchD,hitD]=await Promise.all([safeGet(API+'/teams/'+tid+'/stats?stats=season&group=pitching&sportId=1'),safeGet(API+'/teams/'+tid+'/stats?stats=season&group=hitting&sportId=1')]);
+  const pst=pitchD?.stats?.[0]?.splits?.[0]?.stat||{},hst=hitD?.stats?.[0]?.splits?.[0]?.stat||{};
+  const w=safe(()=>+pst.wins,0),l=safe(()=>+pst.losses,0),g=Math.max(1,w+l);
+  const wp=Math.round(w/g*100),ra=safe(()=>+pst.runs,0),rs=safe(()=>+hst.runs,0);
+  const rdiff=(rs-ra)/g;
+  S[pfx+'Team']={w,l,wp,rspg:(rs/g),rapg:(ra/g),rdiff,ops:hst.ops||'-',era:pst.era||'-'};
+  setSlider(side==='home'?'hWin':'aWin',Math.min(75,Math.max(25,wp)),'%');
+  const el=document.getElementById(pfx+'team-wrap');
+  if(el)el.innerHTML='<div class="ts-row"><span style="color:var(--m1)">Record</span><span>'+w+'-'+l+' ('+wp+'%)</span></div>'
+    +'<div class="ts-row"><span style="color:var(--m1)">Runs Scored/G</span><span style="color:var(--ac)">'+(rs/g).toFixed(2)+'</span></div>'
+    +'<div class="ts-row"><span style="color:var(--m1)">Runs Allowed/G</span><span style="color:var(--r)">'+(ra/g).toFixed(2)+'</span></div>'
+    +'<div class="ts-row"><span style="color:var(--m1)">Run Diff/G</span><span style="color:'+(rdiff>=0?'var(--ac)':'var(--r)')+'">'+(rdiff>=0?'+':'')+rdiff.toFixed(2)+'</span></div>'
+    +'<div class="ts-row"><span style="color:var(--m1)">Team OPS</span><span>'+hst.ops+'</span></div>'
+    +'<div class="ts-row"><span style="color:var(--m1)">Team ERA</span><span>'+(pst.era||'-')+'</span></div>'
+    +'<div class="ts-row"><span style="color:var(--m1)">Team WHIP</span><span>'+(pst.whip||'-')+'</span></div>';
+}
+
+async function loadBull(teamId,side){
+  const pfx=side==='home'?'h':'a';
+  const[rosterD,teamStD]=await Promise.all([safeGet(API+'/teams/'+teamId+'/roster?rosterType=active'),safeGet(API+'/teams/'+teamId+'/stats?stats=season&group=pitching&sportId=1')]);
+  const pitchers=(rosterD?.roster||[]).filter(p=>p.position?.type==='Pitcher'&&p.position?.code!=='1');
+  const baseERA=Math.max(2,Math.min(7,safe(()=>+teamStD.stats[0].splits[0].stat.era,4.0)));
+  const cutoff=new Date(Date.now()-3*864e5);
+  let fatData=[];
+  await Promise.all(pitchers.slice(0,8).map(async p=>{
+    const gd=await safeGet(API+'/people/'+p.person.id+'/stats?stats=gameLog&group=pitching&sportId=1&limit=5');
+    const recent=(gd?.stats?.[0]?.splits||[]).filter(g=>g.date&&new Date(g.date)>=cutoff);
+    const pitches=recent.reduce((a,g)=>a+safe(()=>+g.stat.numberOfPitches,0),0);
+    if(pitches>0)fatData.push({name:p.person.fullName,pitches});
+  }));
+  fatData.sort((a,b)=>b.pitches-a.pitches);
+  const totalP=fatData.slice(0,4).reduce((a,b)=>a+b.pitches,0);
+  const adjERA=+(baseERA+Math.min(1.5,totalP/60*.6)).toFixed(2);
+  const barsEl=document.getElementById(pfx+'bull-bars');
+  if(barsEl)barsEl.innerHTML=fatData.length===0?'<div style="color:var(--ac);font-family:\'IBM Plex Mono\',monospace;font-size:.61rem">Fully rested</div>':fatData.slice(0,5).map(r=>{const pct=Math.min(100,r.pitches/50*100);const col=r.pitches>35?'var(--r)':r.pitches>20?'var(--y)':'var(--ac)';return '<div class="bull-row"><span class="bull-nm">'+r.name.split(' ').pop()+'</span><div class="bull-tr"><div class="bull-fi" style="width:'+pct.toFixed(0)+'%;background:'+col+'"></div></div><span class="bull-pp" style="color:'+col+'">'+r.pitches+'p</span></div>';}).join('');
+  const eraEl=document.getElementById(pfx+'bull-era');
+  if(eraEl){eraEl.textContent=adjERA.toFixed(2);eraEl.style.color=adjERA>5?'var(--r)':adjERA>4?'var(--y)':'var(--ac)';}
+  setSlider(pfx+'Bull',adjERA.toFixed(1));setSlider('t'+pfx.toUpperCase()+'Bull',adjERA.toFixed(1));
+  S[pfx+'Bull']={adjERA,baseERA,totalPitches:totalP};
+}
+
+async function loadUmpire(gamePk){
+  const d=await safeGet(API+'/game/'+gamePk+'/boxscore');
+  const officials=d?.officials||[];
+  const hpUmp=officials.find(o=>o.officialType==='Home Plate');
+  const name=hpUmp?.official?.fullName||'Unknown';
+  const info=UMPS[name]||{adj:0,zone:'Unknown',notes:'No historical data'};
+  S.ump={name,adj:info.adj};
+  setSlider('umpAdj',info.adj.toFixed(2));setSlider('tumpAdj',info.adj.toFixed(2));
+  ['umpAdj','tumpAdj'].forEach(id=>{const el=document.getElementById(id);if(!el)return;const s=el.nextElementSibling;if(s&&s.classList.contains('rv'))s.textContent=(info.adj>0?'+':'')+info.adj.toFixed(2);});
+  const el=document.getElementById('ump-wrap');if(!el)return;
+  const adjCol=info.adj>0.05?'var(--r)':info.adj<-0.05?'var(--ac)':'var(--y)';
+  const adjLbl=info.adj>0.05?'Run-Friendly':info.adj<-0.05?'Pitching-Friendly':'Neutral';
+  el.innerHTML='<div class="ump-card"><div class="ump-nm">'+name+'</div><div class="ump-stats"><div>Run Adj:<span style="color:'+adjCol+'">'+(info.adj>0?'+':'')+info.adj.toFixed(2)+' R/G</span></div><div>Zone:<span>'+info.zone+'</span></div><div style="color:var(--m2)">'+info.notes+'</div></div><div style="margin-top:5px;padding:5px 7px;background:'+(info.adj>0.05?'rgba(255,77,109,.06)':info.adj<-0.05?'rgba(0,229,160,.06)':'rgba(251,191,36,.06)')+';border-radius:3px;font-family:\'IBM Plex Mono\',monospace;font-size:.62rem;color:'+adjCol+'">'+adjLbl+' - '+(info.adj>0?'+':'')+info.adj.toFixed(2)+' runs/game vs league avg</div></div>';
+}
+
+async function loadSavant(pid,side){
+  const pfx=side==='home'?'h':'a';
+  const yr=new Date().getFullYear();
+  const url='https://baseballsavant.mlb.com/statcast_search/csv?hfSea='+yr+'%7C&player_type=pitcher&pitchers_lookup%5B%5D='+pid+'&group_by=name&type=details&';
+  let avgEV='-',barrelPct='-',hardPct='-',xwoba='-',fb4Pct=0,brPct=0,osPct=0,whiffPct='-';
+  try{
+    // Try direct first (works on GitHub Pages), then proxies
+let r = null;
+try { r = await fetch(url); } catch(e) { r = null; }
+if (!r || !r.ok) {
+  for (let pi = 0; pi < PROXIES.length; pi++) {
+    try {
+      const idx = (activeProxy + pi) % PROXIES.length;
+      r = await fetch(PROXIES[idx] + encodeURIComponent(url));
+      if (r && r.ok) break;
+    } catch(e) { r = null; }
+  }
+}
+if (!r || !r.ok) throw new Error('Savant unavailable');
+    const csv=await r.text();const rows=csv.trim().split('\n');if(rows.length<2)throw new Error('no data');
+    const hdr=rows[0].split(',').map(h=>h.replace(/"/g,'').trim());
+    const idx=n=>hdr.indexOf(n);
+    const evI=idx('launch_speed'),laI=idx('launch_angle'),xwI=idx('estimated_woba_using_speedangle'),ptI=idx('pitch_type'),descI=idx('description');
+    let evSum=0,evN=0,xwSum=0,xwN=0,barrels=0,hard=0,total=0,fb4=0,br=0,os=0,ptTotal=0,swings=0,misses=0;
+    rows.slice(1,1001).forEach(row=>{
+      const c=row.split(',');
+      const ev=parseFloat(c[evI]),la=parseFloat(c[laI]),xw=parseFloat(c[xwI]);
+      const pt=(c[ptI]||'').replace(/"/g,'').trim(),desc=(c[descI]||'').replace(/"/g,'').trim();
+      if(!isNaN(ev)&&ev>0){evSum+=ev;evN++;if(ev>=95)hard++;total++;if(ev>=98&&la>=8&&la<=32)barrels++;}
+      if(!isNaN(xw)&&xw>0){xwSum+=xw;xwN++;}
+      if(pt){ptTotal++;if(['FF','SI','FC'].includes(pt))fb4++;else if(['SL','CU','KC','CS','SV'].includes(pt))br++;else if(['CH','FS','FO','SC'].includes(pt))os++;}
+      if(['swinging_strike','swinging_strike_blocked'].includes(desc))misses++;
+      if(['swinging_strike','swinging_strike_blocked','foul','hit_into_play','foul_tip'].includes(desc))swings++;
+    });
+    if(evN>0)avgEV=(evSum/evN).toFixed(1);
+    if(total>0){barrelPct=((barrels/total)*100).toFixed(1);hardPct=((hard/total)*100).toFixed(1);}
+    if(xwN>0)xwoba=(xwSum/xwN).toFixed(3);
+    if(ptTotal>0){fb4Pct=Math.round(fb4/ptTotal*100);brPct=Math.round(br/ptTotal*100);osPct=Math.round(os/ptTotal*100);}
+    if(swings>0)whiffPct=((misses/swings)*100).toFixed(1);
+  }catch(e){}
+  S[pfx+'SC']={avgEV,barrelPct,hardPct,xwoba,fb4Pct,brPct,osPct,whiffPct};
+  const scEl=document.getElementById(pfx+'-sc');
+  if(scEl){
+    const evCol=avgEV!=='-'?(+avgEV<88?'var(--ac)':+avgEV<91?'var(--y)':'var(--r)'):'var(--tx)';
+    const brlCol=barrelPct!=='-'?(+barrelPct<6?'var(--ac)':+barrelPct<10?'var(--y)':'var(--r)'):'var(--tx)';
+    const xwCol=xwoba!=='-'?(+xwoba<.300?'var(--ac)':+xwoba<.340?'var(--y)':'var(--r)'):'var(--tx)';
+    scEl.innerHTML='<div class="g4" style="margin-bottom:7px"><div class="scell"><div class="scl">Avg EV</div><div class="scv" style="color:'+evCol+'">'+avgEV+'</div></div><div class="scell"><div class="scl">Barrel%</div><div class="scv" style="color:'+brlCol+'">'+barrelPct+'%</div></div><div class="scell"><div class="scl">Hard%</div><div class="scv cn">'+hardPct+'%</div></div><div class="scell"><div class="scl">xwOBA</div><div class="scv" style="color:'+xwCol+'">'+xwoba+'</div></div></div>'+(whiffPct!=='-'?'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.61rem;color:var(--m2)">Whiff%: '+whiffPct+'%</div>':'')+'<div style="margin-top:5px;font-family:\'IBM Plex Mono\',monospace;font-size:.6rem;color:var(--m1)">Pitcher-allowed stats. Lower EV/Barrel%/xwOBA = better for pitcher.</div>';
+  }
+  const mixEl=document.getElementById(pfx+'-mix');
+  if(mixEl){
+    if(fb4Pct===0&&brPct===0&&osPct===0){mixEl.innerHTML='<div style="color:var(--m1);font-family:\'IBM Plex Mono\',monospace;font-size:.62rem">Pitch mix unavailable - Savant did not respond.</div>';}
+    else{const analysis=fb4Pct>55?'Heavy fastball - power hitters can exploit.':osPct>25?'Offspeed heavy - effective vs aggressive lineups.':brPct>40?'Breaking ball heavy - watch platoon matchups.':'Balanced approach.';mixEl.innerHTML='<div class="mix-bar"><div class="mix-fb" style="width:'+fb4Pct+'%"></div><div class="mix-br" style="width:'+brPct+'%"></div><div class="mix-os" style="width:'+osPct+'%"></div></div><div class="mix-lbls"><span style="color:var(--bl)">4-Seam/Sinker: '+fb4Pct+'%</span><span style="color:var(--pu)">Breaking: '+brPct+'%</span><span style="color:var(--or)">Offspeed: '+osPct+'%</span></div><div style="margin-top:5px;font-family:\'IBM Plex Mono\',monospace;font-size:.61rem;color:var(--m1)">'+analysis+'</div>';}
+  }
+}
+
+async function getPHand(pid){const d=await safeGet(API+'/people/'+pid);return d?.people?.[0]?.pitchHand?.code||'R';}
+async function loadLineups(gpk,hSP,aSP){
+  let confH=null,confA=null;
+  const boxD=await safeGet(API+'/game/'+gpk+'/boxscore');
+  if(boxD?.teams?.home?.battingOrder?.length>0)confH=boxD.teams.home;
+  if(boxD?.teams?.away?.battingOrder?.length>0)confA=boxD.teams.away;
+  let projH=null,projA=null;
+  const liveD=await safeGet('https://statsapi.mlb.com/api/v1.1/game/'+gpk+'/feed/live?fields=liveData,boxscore,teams,players,battingOrder');
+  if(!confH&&liveD?.liveData?.boxscore?.teams?.home?.battingOrder?.length>0)projH=liveD.liveData.boxscore.teams.home;
+  if(!confA&&liveD?.liveData?.boxscore?.teams?.away?.battingOrder?.length>0)projA=liveD.liveData.boxscore.teams.away;
+  const hHand=aSP?await getPHand(aSP.id):'R',aHand=hSP?await getPHand(hSP.id):'R';
+  S.hHand=hHand;S.aHand=aHand;
+  if(confH)await processLineup(confH,'home',hHand,true);
+  else if(projH)await processLineup(projH,'home',hHand,false);
+  else{document.getElementById('hl-proj-wrap').innerHTML='<div class="pend">Lineup not yet posted. Typically appears 6-8 hrs before first pitch.</div>';setTagEl('hl-tag','PENDING','tag tm');}
+  if(confA)await processLineup(confA,'away',aHand,true);
+  else if(projA)await processLineup(projA,'away',aHand,false);
+  else{document.getElementById('al-proj-wrap').innerHTML='<div class="pend">Lineup not yet posted.</div>';setTagEl('al-tag','PENDING','tag tm');}
+}
+function setTagEl(id,txt,cls){const el=document.getElementById(id);if(el){el.className=cls;el.textContent=txt;}}
+
+async function processLineup(td,side,oppHand,isConf){
+  const pfx=side==='home'?'h':'a';
+  const order=td.battingOrder.slice(0,9),players=td.players;
+  const wts=[1.3,1.25,1.2,1.1,1.05,1.0,.95,.9,.85];
+  const batterData=await Promise.all(order.map(async(pid,i)=>{
+    const pk='ID'+pid,pl=players[pk];if(!pl)return null;
+    const nm=pl.person.fullName,bh=pl.batSide?.code||'R',pos=pl.position?.abbreviation||'-';
+    const[seaD,r14D,platD,riscpD]=await Promise.all([
+      safeGet(API+'/people/'+pid+'/stats?stats=season&group=hitting&sportId=1'),
+      safeGet(API+'/people/'+pid+'/stats?stats=byDateRange&group=hitting&sportId=1&startDate='+daysAgoStr(14)+'&endDate='+todayStr()),
+      safeGet(API+'/people/'+pid+'/stats?stats=statSplits&group=hitting&sportId=1&sitCodes=vl,vr'),
+      safeGet(API+'/people/'+pid+'/stats?stats=statSplits&group=hitting&sportId=1&sitCodes=risp'),
+    ]);
+    const st=seaD?.stats?.[0]?.splits?.[0]?.stat||{};
+    const ops=safe(()=>+st.ops,.700),woba=safe(()=>+st.woba||+st.weightedOnBaseAverage,.310);
+    const bb=safe(()=>+st.baseOnBalls,0),k=safe(()=>+st.strikeOuts,0);
+    const pa=safe(()=>+st.plateAppearances,Math.max(1,+st.atBats||1));
+    const kpct=safe(()=>(k/pa)*100,20),bbpct=safe(()=>(bb/pa)*100,8);
+    const ops14=safe(()=>+r14D?.stats?.[0]?.splits?.[0]?.stat?.ops,ops);
+    const platSplits=platD?.stats?.[0]?.splits||[];
+    const vsOH=platSplits.find(s=>s.split?.code===(oppHand==='L'?'vl':'vr'));
+    const platOPS=safe(()=>+vsOH?.stat?.ops,ops);
+    const riscpSplits=riscpD?.stats?.[0]?.splits||[];
+    const riscpSplit=riscpSplits.find(s=>s.split?.code==='risp');
+    const riscpAVG=safe(()=>+riscpSplit?.stat?.avg,.250);
+    return{pid,nm,bh,pos,ops,woba,kpct,bbpct,ops14,platOPS,riscpAVG};
+  }));
+  S[pfx+'Batters']=batterData;
+  let totalScore=0,count=0;
+  batterData.forEach((b,i)=>{if(!b)return;const adv=(b.bh==='L'&&oppHand==='R')||(b.bh==='R'&&oppHand==='L')?1:b.bh==='S'?.5:-.8;const base=100+adv*15;const heat=(b.ops14-b.ops)*120;const plat=(b.platOPS-b.ops)*60;const risc=(b.riscpAVG-.250)*100;const final=Math.max(55,Math.min(145,Math.round(base+heat+plat+risc)));totalScore+=final*(wts[i]||1);count++;});
+  const avg=count>0?Math.round(totalScore/count):100;
+  const rows=batterData.map((b,i)=>{if(!b)return'';const adv=(b.bh==='L'&&oppHand==='R')||(b.bh==='R'&&oppHand==='L')?1:b.bh==='S'?.5:-.8;const sc=Math.round(100+adv*15);const scls=adv>0?'cg':adv<0?'cb':'cy';const hd=b.ops14-b.ops;const hcol=hd>0.050?'var(--ac)':hd<-0.050?'var(--r)':'var(--y)';const hico=hd>0.050?'hot':hd<-0.050?'cold':'neut';return '<tr><td style="color:var(--m1);font-size:.58rem">'+(i+1)+'</td><td>'+b.nm.split(' ').pop()+'</td><td>'+b.pos+'</td><td><span class="bh bh-'+b.bh+'">'+b.bh+'</span></td><td class="'+scls+'">'+sc+'</td><td style="color:'+hcol+'">'+b.ops14.toFixed(3)+'</td><td>'+b.platOPS.toFixed(3)+'</td><td>'+b.riscpAVG.toFixed(3)+'</td><td style="color:var(--m1)">'+b.kpct.toFixed(1)+'%</td><td style="color:var(--m1)">'+b.bbpct.toFixed(1)+'%</td></tr>';}).join('');
+  const tbl='<table class="lu-tbl"><thead><tr><th>#</th><th>Player</th><th>Pos</th><th>B</th><th>Split</th><th>OPS-14</th><th>Platoon</th><th>RISP</th><th>K%</th><th>BB%</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  const projWrap=document.getElementById(pfx+'l-proj-wrap'),confWrap=document.getElementById(pfx+'l-conf-wrap');
+  const noteEl=document.getElementById(pfx+'l-note'),cbtn=document.getElementById(pfx+'l-cb');
+  if(isConf){if(projWrap)projWrap.innerHTML=tbl;if(confWrap)confWrap.innerHTML=tbl;if(cbtn)cbtn.style.display='inline-block';showLU(side,'conf');if(noteEl){noteEl.style.display='block';noteEl.className='lcn lcn-c';noteEl.textContent='Confirmed lineup - 100% confidence applied.';}setTagEl(pfx+'l-tag','CONFIRMED','tag tc');const cs=document.getElementById(pfx+'LConf');if(cs){cs.value=1;const s=cs.nextElementSibling;if(s&&s.classList.contains('rv'))s.textContent='100%';}}
+  else{if(projWrap)projWrap.innerHTML=tbl;if(noteEl){noteEl.style.display='block';noteEl.className='lcn lcn-p';noteEl.textContent='Projected lineup - 85% confidence. Auto-updates when confirmed.';}setTagEl(pfx+'l-tag','PROJECTED','tag tp');}
+  setSlider(pfx+'Wrc',avg);setSlider('t'+pfx.toUpperCase()+'Wrc',avg);
+  const wrcEl=document.getElementById(pfx+'Wrc');if(wrcEl&&wrcEl.nextElementSibling)wrcEl.nextElementSibling.textContent=avg;
+  const heatEl=document.getElementById(pfx+'-heat');
+  if(heatEl)heatEl.innerHTML=batterData.filter(Boolean).map(b=>{const diff=b.ops14-b.ops;const col=diff>0.050?'var(--ac)':diff<-0.050?'var(--r)':'var(--y)';const ico=diff>0.050?'HOT':diff<-0.050?'CLD':'---';const bar=Math.min(100,Math.max(0,(+b.ops14/.900)*65+10));return '<div class="heat-row"><span style="font-family:\'IBM Plex Mono\',monospace;font-size:.57rem;color:'+col+';flex-shrink:0;width:28px">'+ico+'</span><span class="heat-nm">'+b.nm.split(' ').pop()+'</span><div style="flex:1;height:4px;background:var(--s3);border-radius:2px;overflow:hidden"><div style="height:100%;width:'+bar+'%;background:'+col+';border-radius:2px"></div></div><span class="heat-val" style="color:'+col+'">'+b.ops14.toFixed(3)+'</span></div>';}).join('')||'<div class="ldg">Streak data unavailable</div>';
+}
+function showLU(side,type){const pfx=side==='home'?'h':'a';const pEl=document.getElementById(pfx+'l-proj-wrap'),cEl=document.getElementById(pfx+'l-conf-wrap'),pb=document.getElementById(pfx+'l-pb'),cb=document.getElementById(pfx+'l-cb');if(type==='proj'){if(pEl)pEl.style.display='block';if(cEl)cEl.style.display='none';if(pb)pb.classList.add('active');if(cb)cb.classList.remove('active');}else{if(pEl)pEl.style.display='none';if(cEl)cEl.style.display='block';if(pb)pb.classList.remove('active');if(cb)cb.classList.add('active');}}
+
+function renderPitchingTab(){
+  const el=document.getElementById('pt-body');if(!el)return;
+  const hn=selGame?.teams.home.team.name||'Home',an=selGame?.teams.away.team.name||'Away';
+  function spB(pfx){
+    const d=S[pfx+'SP'];if(!d)return'<div class="ldg"><span class="spin"></span>Loading...</div>';
+    return'<div class="g5" style="margin-bottom:8px"><div class="scell"><div class="scl">ERA</div><div class="scv '+cERA(d.era)+'">'+d.era.toFixed(2)+'</div></div><div class="scell"><div class="scl">FIP</div><div class="scv '+cERA(d.fip)+'">'+d.fip.toFixed(2)+'</div></div><div class="scell"><div class="scl">WHIP</div><div class="scv cn">'+d.whip.toFixed(2)+'</div></div><div class="scell"><div class="scl">K%</div><div class="scv '+cKpct(d.kpct)+'">'+d.kpct.toFixed(1)+'%</div></div><div class="scell"><div class="scl">BB%</div><div class="scv '+cBBpct(d.bbpct)+'">'+d.bbpct.toFixed(1)+'%</div></div><div class="scell"><div class="scl">HR/9</div><div class="scv '+cHR9(d.hr9)+'">'+d.hr9.toFixed(2)+'</div></div><div class="scell"><div class="scl">GB%</div><div class="scv '+cGBpct(d.gbpct)+'">'+d.gbpct.toFixed(1)+'%</div></div><div class="scell"><div class="scl">LOB%</div><div class="scv '+cLOB(d.lob)+'">'+d.lob.toFixed(1)+'%</div></div><div class="scell"><div class="scl">BABIP</div><div class="scv '+cBABIP(d.babip)+'">'+d.babip.toFixed(3)+'</div></div><div class="scell"><div class="scl">H/A ERA</div><div class="scv '+cERA(d.splitERA)+'">'+d.splitERA.toFixed(2)+'</div></div></div><div style="font-family:\'IBM Plex Mono\',monospace;font-size:.62rem;color:var(--m2);line-height:1.8">L3 ERA: '+d.l3era.toFixed(2)+' | L3 WHIP: '+d.l3whip.toFixed(2)+' | Rest: '+d.rest+' days<br>BABIP: '+(d.babip<.285?'Running lucky':d.babip>.315?'Running unlucky':'Near expected')+'</div>';
+  }
+  function scB(sc){if(!sc||!sc.avgEV)return'<div class="ldg"><span class="spin"></span>Loading Savant...</div>';const evCol=sc.avgEV!=='-'?(+sc.avgEV<88?'var(--ac)':+sc.avgEV<91?'var(--y)':'var(--r)'):'var(--tx)';const brlCol=sc.barrelPct!=='-'?(+sc.barrelPct<6?'var(--ac)':+sc.barrelPct<10?'var(--y)':'var(--r)'):'var(--tx)';const xwCol=sc.xwoba!=='-'?(+sc.xwoba<.300?'var(--ac)':+sc.xwoba<.340?'var(--y)':'var(--r)'):'var(--tx)';return'<div class="g4"><div class="scell"><div class="scl">Avg EV</div><div class="scv" style="color:'+evCol+'">'+sc.avgEV+'</div></div><div class="scell"><div class="scl">Barrel%</div><div class="scv" style="color:'+brlCol+'">'+sc.barrelPct+'%</div></div><div class="scell"><div class="scl">Hard%</div><div class="scv cn">'+sc.hardPct+'%</div></div><div class="scell"><div class="scl">xwOBA</div><div class="scv" style="color:'+xwCol+'">'+sc.xwoba+'</div></div></div>'+(sc.whiffPct!=='-'?'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.61rem;color:var(--m2);margin-top:4px">Whiff%: '+sc.whiffPct+'%</div>':'');}
+  el.innerHTML='<div class="g2"><div class="card"><div class="card-hd">Home SP: '+hn+'</div>'+spB('h')+'</div><div class="card"><div class="card-hd">Away SP: '+an+'</div>'+spB('a')+'</div></div><div class="g2"><div class="card"><div class="card-hd">Home Statcast <span class="tag ts">SAVANT</span></div>'+scB(S.hSC)+'</div><div class="card"><div class="card-hd">Away Statcast <span class="tag ts">SAVANT</span></div>'+scB(S.aSC)+'</div></div><div class="g2"><div class="card"><div class="card-hd">Home Pitch Mix <span class="tag ts">SAVANT</span></div><div id="pt-hmix"></div></div><div class="card"><div class="card-hd">Away Pitch Mix <span class="tag ts">SAVANT</span></div><div id="pt-amix"></div></div></div>';
+  const hm=document.getElementById('h-mix'),am=document.getElementById('a-mix'),hm2=document.getElementById('pt-hmix'),am2=document.getElementById('pt-amix');
+  if(hm&&hm2)hm2.innerHTML=hm.innerHTML;if(am&&am2)am2.innerHTML=am.innerHTML;
+}
+
+function renderBattingTab(){
+  const el=document.getElementById('bat-body');if(!el)return;
+  const hn=selGame?.teams.home.team.name||'Home',an=selGame?.teams.away.team.name||'Away';
+  function batTbl(pfx){
+    const batters=S[pfx+'Batters'];if(!batters||!batters.length)return'<div class="ldg"><span class="spin"></span>Loading...</div>';
+    const rows=batters.map((b,i)=>{if(!b)return'';const hd=b.ops14-b.ops;const hcol=hd>0.050?'var(--ac)':hd<-0.050?'var(--r)':'var(--y)';return'<tr><td style="color:var(--m1);font-size:.58rem">'+(i+1)+'</td><td>'+b.nm.split(' ').pop()+'</td><td>'+b.pos+'</td><td><span class="bh bh-'+b.bh+'">'+b.bh+'</span></td><td class="'+cOPS(b.ops)+'">'+b.ops.toFixed(3)+'</td><td>'+b.woba.toFixed(3)+'</td><td style="color:'+hcol+'">'+b.ops14.toFixed(3)+'</td><td>'+b.platOPS.toFixed(3)+'</td><td>'+b.riscpAVG.toFixed(3)+'</td><td>'+b.kpct.toFixed(1)+'%</td><td>'+b.bbpct.toFixed(1)+'%</td></tr>';}).join('');
+    return'<table class="lu-tbl"><thead><tr><th>#</th><th>Player</th><th>Pos</th><th>B</th><th>OPS</th><th>wOBA</th><th>OPS-14</th><th>Platoon</th><th>RISP</th><th>K%</th><th>BB%</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  }
+  el.innerHTML='<div class="g2"><div class="card"><div class="card-hd">Home Batters: '+hn+'</div>'+batTbl('h')+'</div><div class="card"><div class="card-hd">Away Batters: '+an+'</div>'+batTbl('a')+'</div></div>';
+}
+
+function calcModel(){
+  const{p:prW}=getBlend();
+  const hPQ_live=+document.getElementById('hPQ').value,aPQ_live=+document.getElementById('aPQ').value;
+  const hPriorERA=+document.getElementById('hPriorERA').value,aPriorERA=+document.getElementById('aPriorERA').value;
+  const hCurrERA=safe(()=>parseFloat(document.getElementById('hsp-era').textContent),4.2);
+  const aCurrERA=safe(()=>parseFloat(document.getElementById('asp-era').textContent),4.2);
+  const hBlendERA=bld(hPriorERA,hCurrERA),aBlendERA=bld(aPriorERA,aCurrERA);
+  const hEraS=Math.max(0,Math.min(10,10-(hBlendERA-1)*1.4)),aEraS=Math.max(0,Math.min(10,10-(aBlendERA-1)*1.4));
+  const hPQ=hEraS*prW+hPQ_live*(1-prW),aPQ=aEraS*prW+aPQ_live*(1-prW);
+  const hRest=+document.getElementById('hRest').value,aRest=+document.getElementById('aRest').value;
+  const rP=r=>r>=5?0:r===4?.010:r===3?.020:r===2?.040:.065;
+  const hBull=bld(+document.getElementById('hPriorBull').value,+document.getElementById('hBull').value);
+  const aBull=bld(+document.getElementById('aPriorBull').value,+document.getElementById('aBull').value);
+  const hBS=Math.max(0,Math.min(10,10-(hBull-2)*2.5)),aBS=Math.max(0,Math.min(10,10-(aBull-2)*2.5));
+  const hConf=+document.getElementById('hLConf').value,aConf=+document.getElementById('aLConf').value;
+  const hPriorWrc=+document.getElementById('hPriorWrc').value,aPriorWrc=+document.getElementById('aPriorWrc').value;
+  const hWrc=bld(hPriorWrc,+document.getElementById('hWrc').value)*hConf+hPriorWrc*(1-hConf);
+  const aWrc=bld(aPriorWrc,+document.getElementById('aWrc').value)*aConf+aPriorWrc*(1-aConf);
+  const hLS=Math.max(0,Math.min(10,(hWrc-60)/8)),aLS=Math.max(0,Math.min(10,(aWrc-60)/8));
+  const hWinPct=safe(()=>S.hTeam.wp/100,.52),aWinPct=safe(()=>S.aTeam.wp/100,.48);
+  const hRD=safe(()=>S.hTeam.rdiff,0),aRD=safe(()=>S.aTeam.rdiff,0);
+  const park=+document.getElementById('pf').value,wSpd=+document.getElementById('wndS').value;
+  const wDir=+document.getElementById('wndD').value,tmp=+document.getElementById('tmpF').value;
+  const umpA=+document.getElementById('umpAdj').value;
+  let prob=.5+.038+(hPQ-aPQ)*.015+(hBS-aBS)*.011+(hLS-aLS)*.009+(park-100)/100*.025+wDir*wSpd*.0015+(tmp-72)*.0009+umpA*.018+(hWinPct-aWinPct)*.22+(hRD-aRD)*.008+(rP(aRest)-rP(hRest));
+  prob=Math.max(.08,Math.min(.92,prob));
+  const mktML=+document.getElementById('mktML').value;
+  const mktP=a2p(mktML),edgeN=(prob-mktP)*100,edge=edgeN.toFixed(1);
+  const mML=p2a(prob),mStr=mML>0?'+'+mML:''+mML;
+  const th=thresh(),hn=selGame?.teams.home.team.name||'Home',an=selGame?.teams.away.team.name||'Away';
+  const confDisc=Math.round(((2-hConf-aConf)/2)*100);
+  document.getElementById('m-metrics').innerHTML='<div class="metric"><div class="mlbl">Model Win%</div><div class="mval mvw">'+(prob*100).toFixed(1)+'%</div></div><div class="metric"><div class="mlbl">Model ML</div><div class="mval mvw">'+mStr+'</div></div><div class="metric"><div class="mlbl">Market ML</div><div class="mval mvy">'+(mktML>0?'+'+mktML:mktML)+'</div></div><div class="metric"><div class="mlbl">Edge</div><div class="mval '+(edgeN>0?'mvg':'mvb')+'">'+(edgeN>0?'+':'')+edge+'%</div></div><div class="metric"><div class="mlbl">Min Edge</div><div class="mval mvbl">'+th+'%</div></div><div class="metric"><div class="mlbl">LU Conf</div><div class="mval mvpu">'+(100-confDisc)+'%</div></div><div class="metric"><div class="mlbl">Ump Adj</div><div class="mval '+(umpA>0?'mvb':umpA<0?'mvg':'mvy')+'">'+(umpA>0?'+':'')+umpA.toFixed(2)+'</div></div>';
+  let vc,vt;
+  if(edgeN>th){vc='v-b';vt='BET - +'+edge+'% edge on '+hn+' ML. Exceeds Week '+document.getElementById('sweek').value+' threshold ('+th+'%). Umpire: '+(umpA>0.05?'run-friendly':'pitching-friendly')+'. LU conf: '+Math.round(hConf*100)+'%/'+Math.round(aConf*100)+'%.';}
+  else if(edgeN<-th){vc='v-f';vt='FADE - '+edge+'% negative edge. Model favors '+an+' side.';}
+  else{vc='v-m';vt='MARGINAL - '+edge+'% within +-'+th+'% band. Monitor lineup confirmations and line movement.';}
+  document.getElementById('m-verdict').innerHTML='<div class="verdict '+vc+'">'+vt+'</div>';
+  const facs=[{n:'Home SP Quality',v:hPQ,c:'var(--ac)'},{n:'Away SP Quality',v:aPQ,c:'var(--r)'},{n:'Home Bullpen',v:hBS,c:'var(--ac)'},{n:'Away Bullpen',v:aBS,c:'var(--r)'},{n:'Home Lineup',v:hLS,c:'var(--ac)'},{n:'Away Lineup',v:aLS,c:'var(--r)'},{n:'Park Factor',v:(park-80)/40*10,c:'var(--y)'},{n:'Ump Run Env',v:Math.max(0,Math.min(10,5+umpA*10)),c:'var(--bl)'},{n:'Home Rest',v:Math.min(10,hRest/5*10),c:'var(--bl)'},{n:'Away Rest',v:Math.min(10,aRest/5*10),c:'var(--bl)'},{n:'Home Run Diff',v:Math.max(0,Math.min(10,5+hRD)),c:'var(--pu)'},{n:'Away Run Diff',v:Math.max(0,Math.min(10,5+aRD)),c:'var(--pu)'}];
+  document.getElementById('m-factors').innerHTML=facs.map(f=>'<div class="fbr"><span class="fbl">'+f.n+'</span><div class="fb-track"><div class="fb-fill" style="width:'+((Math.max(0,Math.min(10,f.v))/10*100).toFixed(0))+'%;background:'+f.c+'"></div></div><span class="fbv" style="color:'+f.c+'">'+f.v.toFixed(1)+'</span></div>').join('');
+  document.getElementById('m-result').style.display='block';
+}
+
+function calcTotals(){
+  function pqToERA(pq){return Math.max(1.5,Math.min(7,5.5-pq*.35));}
+  const hSPE=bld(+document.getElementById('thPrior').value||3.75,pqToERA(+document.getElementById('thPQ').value));
+  const aSPE=bld(+document.getElementById('taPrior').value||4.10,pqToERA(+document.getElementById('taPQ').value));
+  const hBE=bld(+document.getElementById('thBP').value||3.60,+document.getElementById('thBull').value);
+  const aBE=bld(+document.getElementById('taBP').value||4.00,+document.getElementById('taBull').value);
+  const pk=+document.getElementById('tpf').value,wnd=+document.getElementById('twnd').value;
+  const tmp=+document.getElementById('ttmp').value,ua=+document.getElementById('tumpAdj').value;
+  const hW=+document.getElementById('thWrc').value,aW=+document.getElementById('taWrc').value;
+  const mkt=+document.getElementById('tmkt').value||8.5;
+  const hBl=hSPE*.6+hBE*.4,aBl=aSPE*.6+aBE*.4;
+  const pm=pk/100,tm=1+(tmp-72)*.003,wm=1+wnd;
+  const hr=aBl*pm*tm*wm*(hW/100)*.9,ar=hBl*pm*tm*wm*(aW/100)*.9;
+  const tot=+(hr+ar+ua).toFixed(2),diff=(tot-mkt).toFixed(2),dn=+diff;
+  document.getElementById('t-metrics').innerHTML='<div class="metric"><div class="mlbl">Model Total</div><div class="mval mvw">'+tot.toFixed(2)+'</div></div><div class="metric"><div class="mlbl">Market O/U</div><div class="mval mvy">'+mkt+'</div></div><div class="metric"><div class="mlbl">Difference</div><div class="mval '+(dn>0?'mvb':'mvg')+'">'+(dn>0?'+':'')+diff+'</div></div><div class="metric"><div class="mlbl">Home Proj</div><div class="mval mvw">'+hr.toFixed(2)+'</div></div><div class="metric"><div class="mlbl">Away Proj</div><div class="mval mvw">'+ar.toFixed(2)+'</div></div><div class="metric"><div class="mlbl">Ump Adj</div><div class="mval '+(ua>0?'mvb':ua<0?'mvg':'mvy')+'">'+(ua>0?'+':'')+ua.toFixed(2)+'</div></div>';
+  let vc,vt;
+  if(dn>.5){vc='v-f';vt='LEAN OVER - Model: '+tot.toFixed(2)+' vs market '+mkt+'. Gap: +'+diff+'.';}
+  else if(dn<-.5){vc='v-b';vt='LEAN UNDER - Model: '+tot.toFixed(2)+' vs market '+mkt+'. Gap: '+diff+'.';}
+  else{vc='v-m';vt='CLOSE - Model total within 0.5 runs of line. No strong lean.';}
+  document.getElementById('t-verdict').innerHTML='<div class="verdict '+vc+'">'+vt+'</div>';
+  function poi(l,k){let e=Math.exp(-l),r=e;for(let i=1;i<=k;i++)r*=l/i;return r;}
+  const mx=7;let g='<div class="pow-wrap"><div class="pow-grid" style="grid-template-columns:repeat('+(mx+1)+',1fr)"><div class="pc ph">H/A</div>';
+  for(let a=0;a<mx;a++)g+='<div class="pc ph">'+a+'</div>';
+  for(let h=0;h<mx;h++){g+='<div class="pc ph">'+h+'</div>';for(let a=0;a<mx;a++){const p=poi(hr,h)*poi(ar,a)*100;g+='<div class="pc '+(p>5?'hot':p>2.5?'warm':'')+'">'+p.toFixed(1)+'%</div>';}}
+  g+='</div><p style="font-size:.56rem;color:var(--m1);margin-top:4px;font-family:\'IBM Plex Mono\',monospace">Rows=Home / Cols=Away / Green=Highest Probability</p></div>';
+  document.getElementById('t-poisson').innerHTML=g;
+}
+
+function calcKelly(){
+  const wp=+document.getElementById('kwp').value/100,odds=+document.getElementById('kods').value;
+  const br=+document.getElementById('kbr').value,fr=+document.getElementById('kfr').value;
+  const b=odds>=100?odds/100:100/Math.abs(odds);
+  const kl=(b*wp-(1-wp))/b,fk=kl*fr,bet=Math.max(0,fk*br),ip=a2p(odds);
+  const edge=((wp-ip)*100).toFixed(2);
+  const rows=[['Win Probability',(wp*100).toFixed(1)+'%',''],['Implied Prob',(ip*100).toFixed(1)+'%',''],['Edge',edge+'%',+edge>0?'pos':'neg'],['Full Kelly',(kl*100).toFixed(2)+'%',kl>0?'pos':'neg'],[(fr*100|0)+'% Kelly',(fk*100).toFixed(2)+'%',fk>0?'pos':'neg'],['Bet Amount','$'+bet.toFixed(2),bet>0?'pos':'neg'],['To Win','$'+(bet*b).toFixed(2),'']];
+  let html=rows.map(([l,v,c])=>'<div class="krow"><span style="color:var(--m1)">'+l+'</span><span class="'+c+'">'+v+'</span></div>').join('');
+  if(kl<=0)html+='<div style="color:var(--r);margin-top:6px;font-family:\'IBM Plex Mono\',monospace;font-size:.66rem">Negative Kelly - no edge. Do not bet.</div>';
+  document.getElementById('k-out').innerHTML=html;
+}
+
+function addBet(){
+  const label=document.getElementById('btlbl').value||'Bet',stake=+document.getElementById('btstk').value||0;
+  const odds=+document.getElementById('btods').value||-110;
+  const tw=odds>=100?stake*(odds/100):stake*(100/Math.abs(odds));
+  bets.push({label,stake,odds,tw,result:'pending'});renderBets();
+}
+function setBR(i,r){bets[i].result=r;renderBets();}
+function delBet(i){bets.splice(i,1);renderBets();}
+function renderBets(){
+  document.getElementById('bt-body').innerHTML=bets.map((b,i)=>'<tr><td>'+b.label+'</td><td>$'+b.stake.toFixed(2)+'</td><td>'+(b.odds>0?'+':'')+b.odds+'</td><td class="pos">+$'+b.tw.toFixed(2)+'</td><td><button onclick="setBR('+i+',\'win\')" style="background:'+(b.result==='win'?'var(--ac)':'var(--s2)')+';color:'+(b.result==='win'?'#000':'var(--m1)')+';border:1px solid var(--b1);padding:2px 6px;cursor:pointer;border-radius:2px;font-family:\'IBM Plex Mono\',monospace;font-size:.6rem">W</button> <button onclick="setBR('+i+',\'loss\')" style="background:'+(b.result==='loss'?'var(--r)':'var(--s2)')+';color:'+(b.result==='loss'?'#fff':'var(--m1)')+';border:1px solid var(--b1);padding:2px 6px;cursor:pointer;border-radius:2px;font-family:\'IBM Plex Mono\',monospace;font-size:.6rem">L</button> <button onclick="delBet('+i+')" style="background:var(--s2);color:var(--m1);border:1px solid var(--b1);padding:2px 6px;cursor:pointer;border-radius:2px;font-family:\'IBM Plex Mono\',monospace;font-size:.6rem">X</button></td></tr>').join('');
+  let risk=0,pl=0;bets.forEach(b=>{risk+=b.stake;if(b.result==='win')pl+=b.tw;else if(b.result==='loss')pl-=b.stake;});
+  document.getElementById('bt-foot').innerHTML='<tr style="border-top:2px solid var(--b1)"><td colspan="2" style="color:var(--m1);font-family:\'IBM Plex Mono\',monospace;font-size:.66rem">Risked: $'+risk.toFixed(2)+'</td><td colspan="3" class="'+(pl>=0?'pos':'neg')+'" style="font-family:\'IBM Plex Mono\',monospace;font-size:.66rem">P/L: '+(pl>=0?'+':'')+'$'+pl.toFixed(2)+'</td></tr>';
+}
+
+function cvt(from){
+  try{
+    let p;
+    if(from==='am')p=a2p(+document.getElementById('ocam').value);
+    else if(from==='dec')p=1/+document.getElementById('ocdec').value;
+    else if(from==='frac'){const pts=document.getElementById('ocfrac').value.split('/');p=+pts[1]/(+pts[0]+ +pts[1]);}
+    else p=+document.getElementById('ocimp').value/100;
+    if(!p||p<=0||p>=1)return;
+    const am=p2a(p),dec=(1/p).toFixed(3),imp=(p*100).toFixed(2);
+    const ds=[2,3,4,5,6,8,10,11,12,15,20];let best='1/1',bd=1;
+    ds.forEach(d=>{const n=Math.round((1-p)/p*d);if(n>0){const df=Math.abs(p-d/(n+d));if(df<bd){bd=df;best=n+'/'+d;}}});
+    if(from!=='am')document.getElementById('ocam').value=am;
+    if(from!=='dec')document.getElementById('ocdec').value=dec;
+    if(from!=='frac')document.getElementById('ocfrac').value=best;
+    if(from!=='imp')document.getElementById('ocimp').value=imp;
+  }catch(e){}
+}
+function calcEV(){
+  const wp=+document.getElementById('evwp').value/100,odds=+document.getElementById('evods').value,stk=+document.getElementById('evstk').value||100;
+  const tw=odds>=100?stk*(odds/100):stk*(100/Math.abs(odds));
+  const ev=(wp*tw-(1-wp)*stk).toFixed(2),roi=((ev/stk)*100).toFixed(1),en=+ev;
+  document.getElementById('ev-out').innerHTML='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.73rem;line-height:2.1"><div style="display:flex;justify-content:space-between"><span style="color:var(--m1)">To Win</span><span>$'+tw.toFixed(2)+'</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--m1)">EV</span><span style="color:'+(en>=0?'var(--ac)':'var(--r)')+'">'+(en>=0?'+':'')+'$'+ev+'</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--m1)">ROI</span><span style="color:'+(+roi>=0?'var(--ac)':'var(--r)')+'">'+roi+'%</span></div><div style="margin-top:5px;padding:5px 7px;background:'+(en>=0?'rgba(0,229,160,.05)':'rgba(255,77,109,.05)')+';border-radius:3px;color:'+(en>=0?'var(--ac)':'var(--r)')+';font-size:.63rem">'+(en>=0?'Positive EV - long-run profitable.':'Negative EV - market has the edge.')+'</div></div>';
+}
+function calcVig(){
+  const a=+document.getElementById('viga').value,b=+document.getElementById('vigb').value;
+  const pa=a2p(a),pb=a2p(b),tot=pa+pb,vig=((tot-1)*100).toFixed(2),fa=pa/tot,fb=pb/tot;
+  const fam=p2a(fa),fbm=p2a(fb);
+  document.getElementById('vig-out').innerHTML='<div style="display:flex;gap:14px;flex-wrap:wrap"><div><span style="color:var(--m1)">Vig: </span><span style="color:var(--r)">'+vig+'%</span></div><div><span style="color:var(--m1)">Fair A: </span><span style="color:var(--ac)">'+(fam>0?'+':'')+fam+' ('+(fa*100).toFixed(1)+'%)</span></div><div><span style="color:var(--m1)">Fair B: </span><span style="color:var(--ac)">'+(fbm>0?'+':'')+fbm+' ('+(fb*100).toFixed(1)+'%)</span></div></div>';
+}
+
+updateWeek();calcKelly();cvt('am');calcEV();calcVig();loadGames();
+</script>
+</body>
+</html>
